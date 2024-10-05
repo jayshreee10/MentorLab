@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { FaUserGraduate } from "react-icons/fa6";
+import { Button } from "@/components/ui/button";
+import { GrGoogle } from "react-icons/gr";
 import {
   Card,
   CardContent,
@@ -85,6 +87,10 @@ function AuthPageUI() {
                   // isButtonDisabled={!checkIfSignInFormIsValid()}
                   // handleSubmit={handleLoginUser}
                 />
+                <Button>
+                  <GrGoogle />
+                  Google
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -107,6 +113,10 @@ function AuthPageUI() {
                   // isButtonDisabled={!checkIfSignUpFormIsValid()}
                   // handleSubmit={handleRegisterUser}
                 />
+                <Button>
+                  <GrGoogle />
+                  Google
+                </Button>
               </CardContent>
             </Card>
           </TabsContent>
