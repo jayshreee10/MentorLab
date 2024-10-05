@@ -1,4 +1,5 @@
-import React, { useContext } from "react"; // Import React and useContext
+import React, { useContext } from "react";
+import { FaUserGraduate } from "react-icons/fa6";
 import {
   Card,
   CardContent,
@@ -48,8 +49,9 @@ function AuthPageUI() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <header className="px-4 lg:px-6 h-14 flex items-center border-b">
-        <h1 className="text-xl font-bold">Auth Page</h1>
+      <header className="px-4 lg:px-6 h-14 flex items-center border-b gap-4">
+        <FaUserGraduate size={20} />
+        <h1 className="text-xl font-bold">Mentor Lab</h1>
       </header>
 
       {/* Main Content */}
