@@ -28,7 +28,7 @@ export default function Teacher() {
       icon: LogOut,
       label: "Logout",
       value: "logout",
-      component: null, // We'll handle the modal separately
+      component: null, // No content component for logout
     },
   ];
 
@@ -41,6 +41,7 @@ export default function Teacher() {
     // Handle logout logic here
     console.log("Logged out");
     setShowLogoutModal(false); // Close the modal after logging out
+    setActiveTab("dashboard"); // Optionally navigate back to the dashboard or another tab after logging out
   }
 
   return (
@@ -59,8 +60,8 @@ export default function Teacher() {
                 variant={activeTab === menuItem.value ? "secondary" : "ghost"}
                 onClick={
                   menuItem.value === "logout"
-                    ? handleLogout
-                    : () => setActiveTab(menuItem.value)
+                    ? handleLogout // Trigger logout modal
+                    : () => setActiveTab(menuItem.value) // Change tab
                 }
               >
                 <menuItem.icon className="mr-2 h-4 w-4" />
@@ -76,13 +77,6 @@ export default function Teacher() {
             {menuItems.find((item) => item.value === activeTab)?.label}
           </h1>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList>
-              {menuItems.map((menuItem) => (
-                <TabsTrigger value={menuItem.value} key={menuItem.value}>
-                  {menuItem.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
             {menuItems.map((menuItem) => (
               <TabsContent value={menuItem.value} key={menuItem.value}>
                 {menuItem.component}
