@@ -59,7 +59,7 @@ function calculateTotalStudentsAndProfit(courses) {
   };
 }
 
-function Index() {
+function dashboard() {
   const { totalProfit, totalStudents, studentList } =
     calculateTotalStudentsAndProfit(sampleData);
 
@@ -126,4 +126,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default dashboard;

@@ -25,16 +25,13 @@ const sampleCourses = [
   },
 ];
 
-function Index() {
+function Courses() {
   const navigate = useNavigate();
 
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
         <CardTitle className="text-3xl font-extrabold">All Courses</CardTitle>
-        <Button onClick={() => navigate("/create-new-course")} className="p-6">
-          Create New Course
-        </Button>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -87,4 +84,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default Courses;
