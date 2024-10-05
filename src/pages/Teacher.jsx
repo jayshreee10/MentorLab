@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
-import { BarChart, Book, LogOut } from "lucide-react";
+import { BarChart, Book, LogOut, MonitorUp } from "lucide-react";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
+import { MdOutlineAddToQueue } from "react-icons/md";
 import InstructorCourses from "@/components/instructor-view/courses";
 import InstructorDashboard from "@/components/instructor-view/dashboard";
+import NewCourse from "@/components/instructor-view/courses/add-new-course/NewCourse";
 import Logout from "@/components/modals/Logout";
 
 export default function Teacher() {
@@ -18,11 +20,18 @@ export default function Teacher() {
       value: "dashboard",
       component: <InstructorDashboard />,
     },
+
     {
       icon: Book,
       label: "Courses",
       value: "courses",
       component: <InstructorCourses />,
+    },
+    {
+      icon: MonitorUp,
+      label: "Create Course",
+      value: "Create Course",
+      component: <NewCourse />,
     },
     {
       icon: LogOut,
