@@ -8,36 +8,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  courseCurriculumInitialFormData,
-  courseLandingInitialFormData,
-} from "@/config";
-import { InstructorContext } from "@/context/instructor-context";
-import { Delete, Edit } from "lucide-react";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-function InstructorCourses({ listOfCourses }) {
+const sampleCourses = [
+  {
+    _id: "1",
+    title: "Course 1",
+    pricing: 100,
+    students: [{ studentName: "John Doe" }, { studentName: "Jane Smith" }],
+  },
+  {
+    _id: "2",
+    title: "Course 2",
+    pricing: 150,
+    students: [{ studentName: "Emily Davis" }],
+  },
+];
+
+function Index() {
   const navigate = useNavigate();
-  const {
-    setCurrentEditedCourseId,
-    setCourseLandingFormData,
-    setCourseCurriculumFormData,
-  } = useContext(InstructorContext);
 
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
         <CardTitle className="text-3xl font-extrabold">All Courses</CardTitle>
-        <Button
-          onClick={() => {
-            setCurrentEditedCourseId(null);
-            setCourseLandingFormData(courseLandingInitialFormData);
-            setCourseCurriculumFormData(courseCurriculumInitialFormData);
-            navigate("/instructor/create-new-course");
-          }}
-          className="p-6"
-        >
+        <Button onClick={() => navigate("/create-new-course")} className="p-6">
           Create New Course
         </Button>
       </CardHeader>
@@ -53,33 +48,37 @@ function InstructorCourses({ listOfCourses }) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {listOfCourses && listOfCourses.length > 0
-                ? listOfCourses.map((course) => (
-                    <TableRow>
-                      <TableCell className="font-medium">
-                        {course?.title}
-                      </TableCell>
-                      <TableCell>{course?.students?.length}</TableCell>
-                      <TableCell>
-                        ${course?.students?.length * course?.pricing}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button
-                          onClick={() => {
-                            navigate(`/instructor/edit-course/${course?._id}`);
-                          }}
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Edit className="h-6 w-6" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Delete className="h-6 w-6" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                : null}
+              {sampleCourses.length > 0 ? (
+                sampleCourses.map((course) => (
+                  <TableRow key={course._id}>
+                    <TableCell className="font-medium">
+                      {course.title}
+                    </TableCell>
+                    <TableCell>{course.students.length}</TableCell>
+                    <TableCell>
+                      ${course.students.length * course.pricing}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        onClick={() => navigate(`/edit-course/${course._id}`)}
+                        variant="ghost"
+                        size="sm"
+                      >
+                        Edit
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        Delete
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center">
+                    No courses available
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
@@ -88,4 +87,4 @@ function InstructorCourses({ listOfCourses }) {
   );
 }
 
-export default InstructorCourses;
+export default Index;
