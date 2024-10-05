@@ -1,7 +1,5 @@
-import React, { useContext } from "react";
-import { FaUserGraduate } from "react-icons/fa6";
+import CommonForm from "@/components/common-form";
 import { Button } from "@/components/ui/button";
-import { GrGoogle } from "react-icons/gr";
 import {
   Card,
   CardContent,
@@ -10,22 +8,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CommonForm from "@/components/common-form";
 import { signInFormControls, signUpFormControls } from "@/config"; // Ensure this import path is correct
-// import { AuthContext } from "@/context/auth-context"; // Ensure this path is correct
+import { AuthContext } from "@/context/auth-context"; // Ensure this path is correct
+import { useContext } from "react";
+import { FaUserGraduate } from "react-icons/fa6";
+import { GrGoogle } from "react-icons/gr";
 
 function AuthPageUI() {
   // Access context values directly
-  // const {
-  //   activeTab,
-  //   setActiveTab,
-  //   signInFormData,
-  //   signUpFormData,
-  //   setSignInFormData,
-  //   setSignUpFormData,
-  //   handleLoginUser,
-  //   handleRegisterUser,
-  // } = useContext(AuthContext);
+  const {
+    activeTab,
+    setActiveTab,
+    signInFormData,
+    signUpFormData,
+    setSignInFormData,
+    setSignUpFormData,
+    handleLoginUser,
+    handleRegisterUser,
+  } = useContext(AuthContext);
 
   function handleTabChange(value) {
     setActiveTab(value);
@@ -44,7 +44,8 @@ function AuthPageUI() {
       signUpFormData &&
       signUpFormData.userName !== "" &&
       signUpFormData.userEmail !== "" &&
-      signUpFormData.password !== ""
+      signUpFormData.password !== "" &&
+      signUpFormData.role !== ""
     );
   }
 
@@ -59,8 +60,8 @@ function AuthPageUI() {
       {/* Main Content */}
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Tabs
-          // value={activeTab}
-          // onValueChange={handleTabChange}
+          value={activeTab}
+          onValueChange={handleTabChange}
           className="w-full max-w-md"
         >
           {/* Tabs List */}
@@ -80,16 +81,16 @@ function AuthPageUI() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <CommonForm
-                  // formControls={signInFormControls}
+                  formControls={signInFormControls}
                   buttonText={"Sign In"}
-                  // formData={signInFormData}
-                  // setFormData={setSignInFormData}
-                  // isButtonDisabled={!checkIfSignInFormIsValid()}
-                  // handleSubmit={handleLoginUser}
+                  formData={signInFormData}
+                  setFormData={setSignInFormData}
+                  isButtonDisabled={!checkIfSignInFormIsValid()}
+                  handleSubmit={() => {}}
                 />
-                <Button>
+                <Button className="w-full">
                   <GrGoogle />
-                  Google
+                  <div className="pl-2">Sign up with Google</div>
                 </Button>
               </CardContent>
             </Card>
@@ -106,16 +107,16 @@ function AuthPageUI() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <CommonForm
-                  // formControls={signUpFormControls}
+                  formControls={signUpFormControls}
                   buttonText={"Sign Up"}
-                  // formData={signUpFormData}
-                  // setFormData={setSignUpFormData}
-                  // isButtonDisabled={!checkIfSignUpFormIsValid()}
-                  // handleSubmit={handleRegisterUser}
+                  formData={signUpFormData}
+                  setFormData={setSignUpFormData}
+                  isButtonDisabled={!checkIfSignUpFormIsValid()}
+                  handleSubmit={handleRegisterUser}
                 />
-                <Button>
+                <Button className="w-full">
                   <GrGoogle />
-                  Google
+                  <div className="pl-2">Sign up with Google</div>
                 </Button>
               </CardContent>
             </Card>

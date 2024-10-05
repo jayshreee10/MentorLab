@@ -6,6 +6,8 @@ import { createContext, useEffect, useState } from "react";
 export const AuthContext = createContext(null);
 
 export default function AuthProvider({ children }) {
+  const [activeTab, setActiveTab] = useState("signin");
+
   const [signInFormData, setSignInFormData] = useState(initialSignInFormData);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
   const [auth, setAuth] = useState({
@@ -16,13 +18,13 @@ export default function AuthProvider({ children }) {
 
   async function handleRegisterUser(event) {
     event.preventDefault();
-    const data = await registerService(signUpFormData);
+    // const data = await registerService(signUpFormData);
   }
 
   async function handleLoginUser(event) {
     event.preventDefault();
-    const data = await loginService(signInFormData);
-    console.log(data, "datadatadatadatadata");
+    // const data = await loginService(signInFormData);
+    const data = {};
 
     if (data.success) {
       sessionStorage.setItem(
@@ -45,7 +47,8 @@ export default function AuthProvider({ children }) {
 
   async function checkAuthUser() {
     try {
-      const data = await checkAuthService();
+      // const data = await checkAuthService();
+      const data = {};
       if (data.success) {
         setAuth({
           authenticate: true,
@@ -95,6 +98,8 @@ export default function AuthProvider({ children }) {
         handleLoginUser,
         auth,
         resetCredentials,
+        activeTab,
+        setActiveTab,
       }}
     >
       {loading ? <Skeleton /> : children}
