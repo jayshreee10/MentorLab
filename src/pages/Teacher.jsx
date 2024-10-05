@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
-import { BarChart, Book, LogOut } from "lucide-react";
+import { BarChart, Book, LogOut, MonitorUp } from "lucide-react";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
+import { MdOutlineAddToQueue } from "react-icons/md";
 import InstructorCourses from "@/components/instructor-view/courses";
 import InstructorDashboard from "@/components/instructor-view/dashboard";
+import NewCourse from "@/components/instructor-view/courses/add-new-course/NewCourse";
 import Logout from "@/components/modals/Logout";
 
 export default function Teacher() {
@@ -18,6 +20,7 @@ export default function Teacher() {
       value: "dashboard",
       component: <InstructorDashboard />,
     },
+
     {
       icon: Book,
       label: "Courses",
@@ -25,10 +28,16 @@ export default function Teacher() {
       component: <InstructorCourses />,
     },
     {
+      icon: MonitorUp,
+      label: "Create Course",
+      value: "Create Course",
+      component: <NewCourse />,
+    },
+    {
       icon: LogOut,
       label: "Logout",
       value: "logout",
-      component: null, // We'll handle the modal separately
+      component: null, // No content component for logout
     },
   ];
 
@@ -41,6 +50,7 @@ export default function Teacher() {
     // Handle logout logic here
     console.log("Logged out");
     setShowLogoutModal(false); // Close the modal after logging out
+    setActiveTab("dashboard"); // Optionally navigate back to the dashboard or another tab after logging out
   }
 
   return (
@@ -59,8 +69,8 @@ export default function Teacher() {
                 variant={activeTab === menuItem.value ? "secondary" : "ghost"}
                 onClick={
                   menuItem.value === "logout"
-                    ? handleLogout
-                    : () => setActiveTab(menuItem.value)
+                    ? handleLogout // Trigger logout modal
+                    : () => setActiveTab(menuItem.value) // Change tab
                 }
               >
                 <menuItem.icon className="mr-2 h-4 w-4" />
@@ -76,13 +86,6 @@ export default function Teacher() {
             {menuItems.find((item) => item.value === activeTab)?.label}
           </h1>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList>
-              {menuItems.map((menuItem) => (
-                <TabsTrigger value={menuItem.value} key={menuItem.value}>
-                  {menuItem.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
             {menuItems.map((menuItem) => (
               <TabsContent value={menuItem.value} key={menuItem.value}>
                 {menuItem.component}
