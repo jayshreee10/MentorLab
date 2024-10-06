@@ -10,11 +10,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signInFormControls, signUpFormControls } from "@/config"; // Ensure this import path is correct
 import { AuthContext } from "@/context/auth-context"; // Ensure this path is correct
+import { useFirebaseContext } from "@/context/firebase-context";
 import { useContext } from "react";
 import { FaUserGraduate } from "react-icons/fa6";
 import { GrGoogle } from "react-icons/gr";
 
 function AuthPageUI() {
+  const { signinWithGoogle } = useFirebaseContext();
   // Access context values directly
   const {
     activeTab,
@@ -114,7 +116,12 @@ function AuthPageUI() {
                   isButtonDisabled={!checkIfSignUpFormIsValid()}
                   handleSubmit={handleRegisterUser}
                 />
-                <Button className="w-full">
+                <Button
+                  className="w-full"
+                  onClick={() => {
+                    signinWithGoogle();
+                  }}
+                >
                   <GrGoogle />
                   <div className="pl-2">Sign up with Google</div>
                 </Button>

@@ -1,6 +1,12 @@
 import React, { createContext, useContext } from "react";
 import { initializeApp } from "firebase/app";
-import firebase from "firebase";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth"; // Correct modular imports
+
 // Create Firebase Context
 const FireBaseContext = createContext();
 
@@ -20,16 +26,43 @@ function FirebaseProvider({ children }) {
     messagingSenderId: "375961028209",
     appId: "1:375961028209:web:cb6e226eea62cd2c15bdd0",
   };
+
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+  // Initialize Firebase Auth and Google Auth Provider
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  // Sign in with Google
+  const signinWithGoogle = async () => {
+    try {
+      const credential = await signInWithPopup(auth, googleProvider);
+
+      console.log("signed in successfully" + credential.user.email);
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  };
+
+  // Logout from Firebase
+  const fireBaseLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  };
 
   // Provide Firebase context to children
   const value = {
     app,
     auth,
     googleProvider,
+    signinWithGoogle,
+    fireBaseLogout,
   };
 
   return (
