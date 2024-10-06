@@ -122,10 +122,28 @@ function FirebaseProvider({ children }) {
     return doc(collection(database, dbPaths.users), user.uid);
   }
 
+  //course path
+  function getCoursePath(course) {
+    return doc(collection(database, dbPaths.courses), course.id);
+  }
+
   // Helper function to get user document
   async function getUserDoc(user) {
     const userPoint = getUserPath(user);
     return await getDoc(userPoint);
+  }
+
+  // Helper function to get course document
+  async function getCourseDoc(course) {
+    const coursePoint = getCoursePath(course);
+    return await getDoc(coursePoint);
+  }
+
+  // get all courses
+  async function getAllCourses() {
+    const coursesCollection = collection(database, dbPaths.courses);
+    const coursesSnapshot = await coursesCollection.get();
+    return coursesSnapshot.docs.map((doc) => doc.data());
   }
 
   // Create user data in Firestore
@@ -145,6 +163,42 @@ function FirebaseProvider({ children }) {
       console.log("User does not exist, creating new user...");
       await setDoc(getUserPath(user), appUser);
       navigateToDashboard(user);
+    }
+  }
+
+  // Create course data in Firestore
+  async function createCourseData(course) {
+    const courseDoc = await getCourseDoc(course);
+    if (courseDoc.exists()) {
+      alert("Course already exists, Please sign in.");
+    } else {
+      console.log("Course does not exist, creating new course...");
+      await setDoc(getCoursePath(course), course);
+      navigateToDashboard(course);
+    }
+  }
+
+  //update course data in Firestore
+  async function updateCourseData(course) {
+    const courseDoc = await getCourseDoc(course);
+    if (courseDoc.exists()) {
+      console.log("Course exists, updating course...");
+      await setDoc(getCoursePath(course), course);
+      navigateToDashboard(course);
+    } else {
+      alert("Course does not exist, Please sign in.");
+    }
+  }
+
+  //delete course data in Firestore
+  async function deleteCourseData(course) {
+    const courseDoc = await getCourseDoc(course);
+    if (courseDoc.exists()) {
+      console.log("Course exists, deleting course...");
+      await setDoc(getCoursePath(course), course);
+      navigateToDashboard(course);
+    } else {
+      alert("Course does not exist, Please sign in.");
     }
   }
 
