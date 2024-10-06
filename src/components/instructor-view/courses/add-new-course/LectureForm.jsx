@@ -1,19 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import CommonForm from "@/components/common-form";
 import { lecturesControls, initialLecturesControls } from "@/config";
+
 function LectureForm({ index }) {
   const [lectureData, setLectureData] = useState(initialLecturesControls);
+  const [errors, setErrors] = useState({
+    youtubeLink: "",
+    googleForm: "",
+  });
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  function checkIfLectureFormIsValid() {
-    return (
-      lectureData &&
+  // General regular expression for URL validation
+  const urlRegex = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
+
+  // Validate YouTube and Google Form Links when form data changes
+  useEffect(() => {
+    const validateLinks = () => {
+      let youtubeLinkError = "";
+      let googleFormError = "";
+      let valid = true;
+
+      // YouTube Link validation (general URL check)
+      if (!lectureData.youtubeLink || !urlRegex.test(lectureData.youtubeLink)) {
+        youtubeLinkError = "Please enter a valid YouTube link";
+        valid = false;
+      }
+
+      // Google Form Link validation (general URL check)
+      if (!lectureData.googleForm || !urlRegex.test(lectureData.googleForm)) {
+        googleFormError = "Please enter a valid Google Form link";
+        valid = false;
+      }
+
+      setErrors({
+        youtubeLink: youtubeLinkError,
+        googleForm: googleFormError,
+      });
+
+      return valid;
+    };
+
+    // Check if all required fields (title, description, links) are valid
+    const formIsValid =
       lectureData.title !== "" &&
       lectureData.description !== "" &&
-      lectureData.youtubeLink !== "" &&
-      lectureData.googleForm !== ""
-    );
-  }
+      validateLinks(); // Validate links when lectureData changes
+
+    setIsFormValid(formIsValid); // Update form validity
+  }, [lectureData]); // Only run validation when lectureData changes
+
+  // Handle form submission
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (isFormValid) {
+      // Submit the form if all validations pass
+      console.log("Form Submitted", lectureData);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -29,17 +74,17 @@ function LectureForm({ index }) {
             buttonText={"Confirm & Submit Lecture"}
             formData={lectureData}
             setFormData={setLectureData}
-            isButtonDisabled={!checkIfLectureFormIsValid()}
-            handleSubmit={(event) => {
-              event.preventDefault();
-            }}
+            isButtonDisabled={!isFormValid} // Button enabled only if the form is valid
+            handleSubmit={handleSubmit} // Handle form submission
           />
 
-          {/* <Input
-            type="file"
-            accept="video/*"
-            onChange={(event) => handleSingleLectureUpload(event, index)}
-          /> */}
+          {/* Display errors conditionally */}
+          {errors.youtubeLink && (
+            <p className="text-red-500 mt-2">{errors.youtubeLink}</p>
+          )}
+          {errors.googleForm && (
+            <p className="text-red-500 mt-2">{errors.googleForm}</p>
+          )}
         </div>
       </div>
     </div>
