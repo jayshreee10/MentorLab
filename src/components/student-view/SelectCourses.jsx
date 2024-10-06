@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const filterOptions = {
   Category: [
@@ -34,6 +35,7 @@ function SelectCourses() {
   const [filters, setFilters] = useState({});
   const [loadingState, setLoadingState] = useState(true);
   const [courseList, setCourseList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the list of courses based on filters and sort options
@@ -151,7 +153,8 @@ function SelectCourses() {
                   key={courseItem._id}
                   className="cursor-pointer"
                   onClick={() =>
-                    console.log(`Navigating to course ${courseItem._id}`)
+                    // console.log(`Navigating to course ${courseItem._id}`)
+                    navigate("/student/course-details")
                   }
                 >
                   <CardContent className="flex gap-4 p-4">

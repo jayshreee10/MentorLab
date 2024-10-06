@@ -20,7 +20,7 @@ function Header() {
               className="text-[14px] md:text-[16px] font-medium"
               onClick={() => navigate("/student/courses")}
             >
-              Explore Videos
+              Explore Now
             </Button>
           </div>
         </div>
@@ -36,12 +36,6 @@ function Header() {
           </div>
         </div>
       </header>
-      {/* <div className="p-4"> */}
-      {/* Additional student-specific content can go here */}
-      {/* <h1>Welcome to the Student Portal</h1> */}
-
-      {/* Add other sections or components for the student view */}
-      {/* </div> */}
     </div>
   );
 }

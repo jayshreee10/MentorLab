@@ -5,7 +5,7 @@ import Hero from "./pages/Hero";
 import Home from "./components/student-view/Home";
 import SelectCourses from "@/components/student-view/SelectCourses";
 import StudentViewCourseDetailsPage from "@/components/student-view/CourseDetails";
-import NewStudentCourseProgressPage from "@/components/student-view/CourseProgress";
+import OpenCourse from "./components/student-view/OpenCourse";
 
 function App() {
   return (
@@ -16,14 +16,7 @@ function App() {
         <Route path="/student" element={<Student />}>
           <Route index element={<Home />} />
           <Route path="courses" element={<SelectCourses />} />
-          <Route
-            path="course-details"
-            element={<StudentViewCourseDetailsPage />}
-          />
-          <Route
-            path="course-progress"
-            element={<NewStudentCourseProgressPage />}
-          />
+          <Route path="course-details" element={<OpenCourse />} />
         </Route>
       </Routes>
     </>
