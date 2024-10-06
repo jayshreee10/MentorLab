@@ -14,24 +14,18 @@ import {
   getFirestore,
   setDoc,
 } from "firebase/firestore";
+
 import { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Create Firebase Context
 const FireBaseContext = createContext();
 
-// Custom hook to use Firebase context
 export const useFirebaseContext = () => {
   return useContext(FireBaseContext);
 };
 
-// Firebase Provider component
 function FirebaseProvider({ children }) {
   const navigate = useNavigate();
-  const dbPaths = {
-    users: "users",
-    courses: "courses",
-  };
 
   // Firebase configuration
   const firebaseConfig = {
@@ -43,11 +37,15 @@ function FirebaseProvider({ children }) {
     appId: "1:375961028209:web:cb6e226eea62cd2c15bdd0",
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  const database = getFirestore(app);
+  // Initialize Firebase
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
+  const database = getFirestore(app);
+  const dbPaths = {
+    users: "users",
+    courses: "courses",
+  };
 
   // Sign up with Google
   const signUpWithGoogle = async (role) => {
@@ -72,7 +70,7 @@ function FirebaseProvider({ children }) {
       alert("Failed to sign in with Google, Please try again");
     }
   };
-
+  // Sign up with EmailPaswword
   const signUpWithEmailPassword = async (email, password, name, role) => {
     try {
       console.log("Signing up...");
@@ -90,6 +88,7 @@ function FirebaseProvider({ children }) {
     }
   };
 
+  // Sign in with EmailPaswword
   const signInWithEmailPassword = async (email, password) => {
     try {
       console.log("Signing in...");

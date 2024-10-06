@@ -124,7 +124,7 @@ function AuthPageUI() {
                 formData={signUpFormData}
                 setFormData={setSignUpFormData}
                 isButtonDisabled={!checkIfSignUpFormIsValid()}
-                handleSubmit={() => {
+                handleSubmit={(event) => {
                   event.preventDefault();
                   signUpWithEmailPassword(
                     signUpFormData.userEmail,
@@ -134,7 +134,6 @@ function AuthPageUI() {
                   );
                 }}
               />
-
               <Button
                 className="w-full"
                 disabled={signUpFormData.role == ""}
@@ -145,6 +144,9 @@ function AuthPageUI() {
                 <GrGoogle />
                 <div className="pl-2">Sign up with Google</div>
               </Button>
+              <div className="w-full text-center text-xs text-black font-medium">
+                Select Role to Signup with Google
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
