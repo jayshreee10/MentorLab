@@ -87,7 +87,7 @@ function AuthPageUI() {
                 formData={signInFormData}
                 setFormData={setSignInFormData}
                 isButtonDisabled={!checkIfSignInFormIsValid()}
-                handleSubmit={() => {
+                handleSubmit={(event) => {
                   event.preventDefault();
                   signInWithEmailPassword(
                     signInFormData.userEmail,

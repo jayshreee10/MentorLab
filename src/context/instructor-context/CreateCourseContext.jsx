@@ -1,12 +1,12 @@
 import { createContext, useContext, useState } from "react";
 
-const CreateCourseContext = createContext(null);
+const CourseContext = createContext(null);
 
-export const useCreateCourseContext = () => {
-  return useContext(CreateCourseContext);
+export const useCourseContext = () => {
+  return useContext(CourseContext);
 };
 
-function CreateCourseContextProvider({ children }) {
+function CourseContextProvider({ children }) {
   // State to manage lectures and the list of all lecture details
   const [lectures, setLectures] = useState({
     title: "",
@@ -62,10 +62,8 @@ function CreateCourseContextProvider({ children }) {
   const value = { CreateCourse, lectures, handleAddTask, setLectures };
   // Provide context value to children
   return (
-    <CreateCourseContext.Provider value={value}>
-      {children}
-    </CreateCourseContext.Provider>
+    <CourseContext.Provider value={value}>{children}</CourseContext.Provider>
   );
 }
 
-export default CreateCourseContextProvider;
+export default CourseContextProvider;

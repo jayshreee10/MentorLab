@@ -5,13 +5,13 @@ import CourseLanding from "./course-landing";
 import CourseCurriculum from "./course-curriculum";
 
 export default function InstructorDashboardPage() {
-  const [activeTab, setActiveTab] = useState("dashboard");
+  const [activeTab, setActiveTab] = useState("Lectures");
 
   const menuItems = [
     {
       icon: Youtube,
       label: "Lectures",
-      value: "dashboard",
+      value: "Lectures",
       component: (
         <div>
           <CourseCurriculum />
@@ -21,7 +21,7 @@ export default function InstructorDashboardPage() {
     {
       icon: Text,
       label: "Details",
-      value: "courses",
+      value: "Details",
       component: (
         <div>
           <CourseLanding />

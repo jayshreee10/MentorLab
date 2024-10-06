@@ -197,3 +197,44 @@ export const filterOptions = {
   level: courseLevelOptions,
   primaryLanguage: languageOptions,
 };
+
+
+export const lecturesControls = [
+  {
+    name: "title",
+    label: "Title",
+    placeholder: "Enter the lecture title",
+    type: "text",
+    componentType: "input",
+  },
+  {
+    name: "description",
+    label: "Description",
+    placeholder: "Enter the lecture description",
+    type: "text",
+    componentType: "input",
+  },
+  {
+    name: "youtubeLink",
+    label: "Youtube URL",
+    placeholder: "Enter a valid Youtube link",
+    type: "text",
+    componentType: "input",
+  },
+
+  {
+    name: "googleForm",
+    label: "Google Form URL",
+    placeholder: "Enter a valid google form link for quiz",
+    type: "text",
+    componentType: "input",
+  },
+];
+export const initialLecturesControls = {
+   title:"",
+   description:"",
+   youtubeLink:"",
+   googleForm:""
+  }
+ 
+;

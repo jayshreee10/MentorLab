@@ -12,7 +12,7 @@ function Student() {
       <Home />
       {/* <StudentViewCourseDetailsPage /> */}
       {/* <NewStudentCourseProgressPage /> */}
-      {/* <SelectCourses /> */}
+      <SelectCourses />
       {/* <StudentCourses /> */}
     </div>
   );
