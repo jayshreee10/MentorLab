@@ -1,8 +1,9 @@
 import { GraduationCap, TvMinimalPlay } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 
 function Header() {
+  const navigate = useNavigate();
   return (
     <div>
       <header className="flex items-center justify-between p-4 border-b relative">
@@ -15,10 +16,11 @@ function Header() {
           </Link>
           <div className="flex items-center space-x-1">
             <Button
-              variant="ghost"
+              variant="outline"
               className="text-[14px] md:text-[16px] font-medium"
+              onClick={() => navigate("/student/courses")}
             >
-              Dashboard
+              Explore Videos
             </Button>
           </div>
         </div>
@@ -34,11 +36,12 @@ function Header() {
           </div>
         </div>
       </header>
-      <div className="p-4">
-        {/* Additional student-specific content can go here */}
-        <h1>Welcome to the Student Portal</h1>
-        {/* Add other sections or components for the student view */}
-      </div>
+      {/* <div className="p-4"> */}
+      {/* Additional student-specific content can go here */}
+      {/* <h1>Welcome to the Student Portal</h1> */}
+
+      {/* Add other sections or components for the student view */}
+      {/* </div> */}
     </div>
   );
 }

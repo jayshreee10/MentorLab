@@ -1,12 +1,14 @@
 import { courseCategories } from "@/config";
 import Ad from "../../../public/Ad.png";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 
 function StudentHomePage() {
+  const navigate = useNavigate();
   return (
-    <div className="min-h-screen w-screen bg-white">
+    <div className="h-screen w-screen bg-white">
       {/* Ad Section */}
-      <section className="w-full flex flex-col bg-orange-100 lg:flex-row items-center justify-evenly p-8">
+      <section className="h-full w-full flex flex-col bg-orange-100 lg:flex-row items-center justify-evenly p-8">
         <div className="w-full">
           <h1 className="text-4xl font-bold mb-4">Learning that gets you</h1>
           <p className="text-xl">
@@ -50,7 +52,7 @@ function StudentHomePage() {
             <div className="p-4">
               <h3 className="font-bold mb-2">Course Title</h3>
               <p className="text-sm text-gray-700 mb-2">Instructor Name</p>
-              <p className="font-bold text-[16px]">$100</p>{" "}
+              <p className="font-bold text-[16px]">Free</p>{" "}
               {/* Replace with actual price */}
             </div>
           </div>
