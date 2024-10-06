@@ -16,7 +16,12 @@ import { FaUserGraduate } from "react-icons/fa6";
 import { GrGoogle } from "react-icons/gr";
 
 function AuthPageUI() {
-  const { signinWithGoogle } = useFirebaseContext();
+  const {
+    signUpWithGoogle,
+    signInWithGoogle,
+    signUpWithEmailPassword,
+    signInWithEmailPassword,
+  } = useFirebaseContext();
   // Access context values directly
   const {
     activeTab,
@@ -25,8 +30,6 @@ function AuthPageUI() {
     signUpFormData,
     setSignInFormData,
     setSignUpFormData,
-    handleLoginUser,
-    handleRegisterUser,
   } = useContext(AuthContext);
 
   function handleTabChange(value) {
@@ -84,17 +87,25 @@ function AuthPageUI() {
                 formData={signInFormData}
                 setFormData={setSignInFormData}
                 isButtonDisabled={!checkIfSignInFormIsValid()}
-                handleSubmit={() => {}}
+                handleSubmit={() => {
+                  event.preventDefault();
+                  signInWithEmailPassword(
+                    signInFormData.userEmail,
+                    signInFormData.password
+                  );
+                }}
               />
               <Button
                 className="w-full"
+                disabled={checkIfSignInFormIsValid()}
                 onClick={() => {
-                  signinWithGoogle();
+                  signInWithGoogle();
                 }}
               >
                 <GrGoogle />
-                <div className="pl-2">Sign up with Google</div>
+                <div className="pl-2">Sign in with Google</div>
               </Button>
+              <Button className="w-full">Test</Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -115,12 +126,22 @@ function AuthPageUI() {
                 formData={signUpFormData}
                 setFormData={setSignUpFormData}
                 isButtonDisabled={!checkIfSignUpFormIsValid()}
-                handleSubmit={handleRegisterUser}
+                handleSubmit={() => {
+                  event.preventDefault();
+                  signUpWithEmailPassword(
+                    signUpFormData.userEmail,
+                    signUpFormData.password,
+                    signUpFormData.userName,
+                    signUpFormData.role
+                  );
+                }}
               />
+
               <Button
                 className="w-full"
+                disabled={signUpFormData.role == ""}
                 onClick={() => {
-                  signinWithGoogle();
+                  signUpWithGoogle(signUpFormData.role);
                 }}
               >
                 <GrGoogle />
