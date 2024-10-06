@@ -97,7 +97,6 @@ function AuthPageUI() {
               />
               <Button
                 className="w-full"
-                disabled={checkIfSignInFormIsValid()}
                 onClick={() => {
                   signInWithGoogle();
                 }}
@@ -105,7 +104,6 @@ function AuthPageUI() {
                 <GrGoogle />
                 <div className="pl-2">Sign in with Google</div>
               </Button>
-              <Button className="w-full">Test</Button>
             </CardContent>
           </Card>
         </TabsContent>

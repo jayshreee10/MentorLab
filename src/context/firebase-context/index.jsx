@@ -1,14 +1,12 @@
 import { initializeApp } from "firebase/app";
 import {
-  browserLocalPersistence,
   createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
-  setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-} from "firebase/auth"; // Correct modular imports
+} from "firebase/auth";
 import {
   collection,
   doc,
@@ -17,6 +15,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { createContext, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 // Create Firebase Context
 const FireBaseContext = createContext();
 
@@ -27,10 +27,12 @@ export const useFirebaseContext = () => {
 
 // Firebase Provider component
 function FirebaseProvider({ children }) {
+  const navigate = useNavigate();
   const dbPaths = {
     users: "users",
     courses: "courses",
   };
+
   // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyBNvT5L0u7Y7yB8Xh0vSQuV5li_OTGWhT0",
@@ -52,51 +54,54 @@ function FirebaseProvider({ children }) {
     try {
       const credential = await signInWithPopup(auth, googleProvider);
       const user = credential.user;
-      console.log("signed in successfully");
+      console.log("Signed up successfully with Google");
       await createUserData(user, "", role);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("Failed to sign up with Google, Please try again");
     }
   };
+
   // Sign in with Google
   const signInWithGoogle = async () => {
     try {
       const credential = await signInWithPopup(auth, googleProvider);
       await navigateToDashboard(credential.user);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("Failed to sign in with Google, Please try again");
     }
   };
 
   const signUpWithEmailPassword = async (email, password, name, role) => {
     try {
-      console.log("signing up");
+      console.log("Signing up...");
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       const user = userCredential.user;
-      console.log("signed up successfully");
+      console.log("Signed up successfully with email and password");
       await createUserData(user, name, role);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("Failed to sign up with Email and Password, Please try again");
     }
   };
 
   const signInWithEmailPassword = async (email, password) => {
     try {
+      console.log("Signing in...");
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
+      console.log("Signed in successfully with email and password");
       await navigateToDashboard(userCredential.user);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert("Failed to sign in with Email and Password, Please try again");
     }
   };
@@ -105,27 +110,29 @@ function FirebaseProvider({ children }) {
   const fireBaseLogout = async () => {
     try {
       await signOut(auth);
+      console.log("Signed out successfully");
     } catch (error) {
-      console.log(error);
-      alert("Failed to logout, Please try again");
+      console.error(error);
+      alert("Failed to log out, Please try again");
     }
   };
 
+  // Helper function to get Firestore user path
   function getUserPath(user) {
-    const usersRef = collection(database, dbPaths.users);
-    const userPoint = doc(usersRef, user.uid);
-    return userPoint;
+    return doc(collection(database, dbPaths.users), user.uid);
   }
 
+  // Helper function to get user document
   async function getUserDoc(user) {
     const userPoint = getUserPath(user);
     return await getDoc(userPoint);
   }
 
+  // Create user data in Firestore
   async function createUserData(user, name, role) {
     const appUser = {
       email: user.email,
-      name: name != "" ? name : user.displayName,
+      name: name || user.displayName,
       profile_picture: user.photoURL,
       userId: user.uid,
       role: role,
@@ -133,44 +140,31 @@ function FirebaseProvider({ children }) {
 
     const userDoc = await getUserDoc(user);
     if (userDoc.exists()) {
-      alert("User already exists, Please Sign In");
+      alert("User already exists, Please sign in.");
     } else {
-      console.log("user does not exist");
+      console.log("User does not exist, creating new user...");
       await setDoc(getUserPath(user), appUser);
-      // Set the persistence to 'local' or 'session'
-      setPersistence(auth, browserLocalPersistence)
-        .then(() => {
-          // Existing and new sign-in will be persisted
-        })
-        .catch((error) => {
-          // Handle errors
-          alert("Failed to create user data, Please try again");
-        });
+      navigateToDashboard(user);
     }
   }
 
+  // Navigate to dashboard based on role
   async function navigateToDashboard(user) {
     const userDoc = await getUserDoc(user);
-
     if (userDoc.exists()) {
       const data = userDoc.data();
       if (data.role === "student") {
-        //navigate to student dashboard
+        // Navigate to student dashboard
+        navigate("/student");
+        console.log("Navigating to student dashboard...");
+      } else if (data.role === "teacher") {
+        //instructor
+        navigate("/instructor");
+        // Navigate to teacher dashboard
+        console.log("Navigating to teacher dashboard...");
       }
-      if (data.role === "teacher") {
-        //navigate to teacher dashboard
-      }
-      // Set the persistence to 'local' or 'session'
-      setPersistence(auth, browserLocalPersistence)
-        .then(() => {
-          // Existing and new sign-in will be persisted
-        })
-        .catch((error) => {
-          // Handle errors
-          alert("Failed to navigate to home, Please try again");
-        });
     } else {
-      alert("User does not Exist, Please Sign Up");
+      alert("User does not exist, please sign up.");
     }
   }
 
