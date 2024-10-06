@@ -19,7 +19,7 @@ const AuthBg = ({ children, className, from, to, id }) => {
         screenSize.width > 1024
           ? {
               backgroundImage: `radial-gradient(circle at ${relativeX}px ${relativeY}px, ${
-                from || "rgba(255, 105, 180, 0.7)"
+                from || "rgba(220, 183, 50, 0.7)"
               }, ${to || "transparent"} 60%)`,
             }
           : {}
