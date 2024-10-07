@@ -1,5 +1,5 @@
 import React from "react";
-import { useCursorPosition } from "./UsecursorPosition";
+import { useCursorPosition } from "./usePositionCursor";
 import useScreenSize from "./useScreenSize";
 
 const AuthBg = ({ children, className, from, to, id }) => {
