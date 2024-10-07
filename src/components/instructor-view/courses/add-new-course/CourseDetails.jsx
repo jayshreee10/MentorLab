@@ -1,12 +1,13 @@
 import FormControls from "@/components/common-form/form-controls";
+import { MdDeleteOutline } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { courseLandingPageFormControls } from "@/config";
+import { courseDetailsPageFormControls } from "@/config";
 import { useFirebaseContext } from "@/context/firebase-context";
 import { InstructorContext } from "@/context/instructor-context";
 import { useContext, useState } from "react";
 
-function CourseLanding() {
+function CourseDetails() {
   const { courseLandingFormData, setCourseLandingFormData } =
     useContext(InstructorContext);
   const [url, setUrl] = useState("");
@@ -38,28 +39,29 @@ function CourseLanding() {
       </CardHeader>
 
       <CardContent>
-        <div className="py-5">
+        <div className="">
           {loading && <p>Uploading...</p>}
           {url == "" ? (
-            <div className="mt-4">
+            <div className="mb-5">
               <input type="file" onChange={(e) => setFile(e.target.files[0])} />
 
               <Button onClick={uploadLocalFile}>Upload</Button>
             </div>
           ) : (
-            <div className="relative">
+            <div className="flex flex-col-reverse items-end">
               <img src={url} />
               <button
                 onClick={removeImage}
-                className="absolute top-0 text-white"
+                className=" text-black"
+                title="remove"
               >
-                remove
+                <MdDeleteOutline size={24} />
               </button>
             </div>
           )}
         </div>
         <FormControls
-          formControls={courseLandingPageFormControls}
+          formControls={courseDetailsPageFormControls}
           formData={courseLandingFormData}
           setFormData={setCourseLandingFormData}
         />
@@ -68,4 +70,4 @@ function CourseLanding() {
   );
 }
 
-export default CourseLanding;
+export default CourseDetails;

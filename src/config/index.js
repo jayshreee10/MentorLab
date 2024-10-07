@@ -95,7 +95,7 @@ export const courseCategories = [
   { id: "software-engineering", label: "Software Engineering" },
 ];
 
-export const courseLandingPageFormControls = [
+export const courseDetailsPageFormControls = [
   {
     name: "title",
     label: "Title",

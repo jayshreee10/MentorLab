@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Text, Youtube } from "lucide-react";
 import { useState } from "react";
 import CourseCurriculum from "./course-curriculum";
-import CourseLanding from "./course-landing";
+import CourseLanding from "./CourseDetails";
 
 export default function InstructorDashboardPage() {
   const [activeTab, setActiveTab] = useState("Lectures");
@@ -33,7 +33,7 @@ export default function InstructorDashboardPage() {
 
   return (
     <main className="flex-1 p-8 overflow-y-auto bg-gray-100">
-      <div className="max-w-7xl mx-auto ">
+      <div className="max-w-7xl mx-auto flex flex-col gap-5">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
             {menuItems.map((menuItem) => (
@@ -47,7 +47,6 @@ export default function InstructorDashboardPage() {
               </TabsTrigger>
             ))}
           </TabsList>
-          <Button>Submit</Button>
 
           {/* Rendering Tab Contents */}
           {menuItems.map((menuItem) => (
@@ -56,6 +55,12 @@ export default function InstructorDashboardPage() {
             </TabsContent>
           ))}
         </Tabs>
+        <div className="flex justify-end items-center">
+          <p className="text-xs px-5">
+            Fill both Lectures and Details to submit
+          </p>
+          <Button className="w-[150px]">Submit</Button>
+        </div>
       </div>
       {/* <CourseLanding /> */}
     </main>
