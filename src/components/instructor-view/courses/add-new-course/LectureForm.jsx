@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import CommonForm from "@/components/common-form";
-import { lecturesControls, initialLecturesControls } from "@/config";
+import { Button } from "@/components/ui/button";
+import { initialLecturesControls, lecturesControls } from "@/config";
+import { useFirebaseContext } from "@/context/firebase-context";
+import { useEffect, useState } from "react";
 
 function LectureForm({ index }) {
   const [lectureData, setLectureData] = useState(initialLecturesControls);
@@ -10,6 +11,35 @@ function LectureForm({ index }) {
     googleForm: "",
   });
   const [isFormValid, setIsFormValid] = useState(false);
+
+  const { uploadFile } = useFirebaseContext();
+  const [file, setFile] = useState(null);
+  // const [url, setUrl] = useState("");
+  const [fileData, setFileData] = useState({
+    url: "",
+    type: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  function removeFile() {
+    setFileData({ url: "", type: "" });
+    setFile(null);
+  }
+  function uploadLocalFile() {
+    const tempArray = file.name.split(".");
+    const fileType = tempArray[tempArray.length - 1];
+
+    setLoading(true);
+    uploadFile(file)
+      .then((url) => {
+        setFileData({ url, type: fileType });
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }
 
   // General regular expression for URL validation
   const urlRegex = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
@@ -76,7 +106,36 @@ function LectureForm({ index }) {
             setFormData={setLectureData}
             isButtonDisabled={!isFormValid} // Button enabled only if the form is valid
             handleSubmit={handleSubmit} // Handle form submission
-          />
+          >
+            {loading && <p>Uploading...</p>}
+            {fileData.url == "" ? (
+              <div className="mt-4">
+                <input
+                  type="file"
+                  //only allow image , pdf, ppt, doc
+                  accept="image/*,.pdf,.ppt,.pptx,.doc,.docx"
+                  onChange={(e) => setFile(e.target.files[0])}
+                />
+
+                <Button onClick={uploadLocalFile}>Upload</Button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                {fileData.type === "pdf" ? (
+                  <div>pdf</div>
+                ) : fileData.type === "ppt" || fileData.type === "pptx" ? (
+                  <div>ppt</div>
+                ) : fileData.type === "doc" || fileData.type === "docx" ? (
+                  <div>doc</div>
+                ) : (
+                  <div> image</div>
+                )}
+                <button onClick={removeFile} className="">
+                  remove
+                </button>
+              </div>
+            )}
+          </CommonForm>
 
           {/* Display errors conditionally */}
           {errors.youtubeLink && (

@@ -10,13 +10,15 @@ import {
 import {
   collection,
   doc,
+  getDoc,
   getFirestore,
   setDoc,
-  onSnapshot,
 } from "firebase/firestore";
 
 import { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const FireBaseContext = createContext();
 
@@ -39,12 +41,30 @@ function FirebaseProvider({ children }) {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const googleProvider = new GoogleAuthProvider();
   const database = getFirestore(app);
+  const storage = getStorage(app);
+  const googleProvider = new GoogleAuthProvider();
   const dbPaths = {
     users: "users",
     courses: "courses",
   };
+
+  //to upload files to firebase storage, input: file, output: url
+  async function uploadFile(file) {
+    try {
+      const storageRef = ref(storage, file.name); //we are creating a reference/path to the file in the storage
+      //uploading the file to the storage to given path, storageRef is the path and file is the file to be uploaded
+      const response = await uploadBytes(storageRef, file);
+
+      console.log("Uploaded a blob or file!");
+
+      const url = await getDownloadURL(response.ref);
+
+      return url;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   // Sign up with Google
   const signUpWithGoogle = async (role) => {
@@ -126,47 +146,23 @@ function FirebaseProvider({ children }) {
     return doc(collection(database, dbPaths.courses), course.id);
   }
 
-  // Helper function to listen to user document in real-time
-  async function getUserDoc(user, callback) {
+  // Helper function to get user document
+  async function getUserDoc(user) {
     const userPoint = getUserPath(user);
-
-    // Listen for real-time updates on the user document
-    const unsubscribe = onSnapshot(userPoint, (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        callback(docSnapshot.data());
-      } else {
-        console.log("User does not exist");
-      }
-    });
-
-    return unsubscribe;
+    return await getDoc(userPoint);
   }
 
-  // Helper function to listen to course document in real-time
-  async function getCourseDoc(course, callback) {
+  // Helper function to get course document
+  async function getCourseDoc(course) {
     const coursePoint = getCoursePath(course);
-
-    const unsubscribe = onSnapshot(coursePoint, (docSnapshot) => {
-      if (docSnapshot.exists()) {
-        callback(docSnapshot.data());
-      } else {
-        console.log("Course does not exist");
-      }
-    });
-
-    return unsubscribe;
+    return await getDoc(coursePoint);
   }
 
-  // Get all courses with real-time updates
-  async function getAllCourses(callback) {
+  // get all courses
+  async function getAllCourses() {
     const coursesCollection = collection(database, dbPaths.courses);
-
-    const unsubscribe = onSnapshot(coursesCollection, (querySnapshot) => {
-      const courses = querySnapshot.docs.map((doc) => doc.data());
-      callback(courses);
-    });
-
-    return unsubscribe;
+    const coursesSnapshot = await coursesCollection.get();
+    return coursesSnapshot.docs.map((doc) => doc.data());
   }
 
   // Create user data in Firestore
@@ -179,81 +175,70 @@ function FirebaseProvider({ children }) {
       role: role,
     };
 
-    const unsubscribe = getUserDoc(user, (data) => {
-      if (data) {
-        alert("User already exists, Please sign in.");
-      } else {
-        console.log("User does not exist, creating new user...");
-        setDoc(getUserPath(user), appUser);
-        navigateToDashboard(user);
-      }
-    });
-
-    return unsubscribe;
+    const userDoc = await getUserDoc(user);
+    if (userDoc.exists()) {
+      alert("User already exists, Please sign in.");
+    } else {
+      console.log("User does not exist, creating new user...");
+      await setDoc(getUserPath(user), appUser);
+      navigateToDashboard(user);
+    }
   }
 
   // Create course data in Firestore
   async function createCourseData(course) {
-    const unsubscribe = getCourseDoc(course, (data) => {
-      if (data) {
-        alert("Course already exists, Please sign in.");
-      } else {
-        console.log("Course does not exist, creating new course...");
-        setDoc(getCoursePath(course), course);
-        navigateToDashboard(course);
-      }
-    });
-
-    return unsubscribe;
+    const courseDoc = await getCourseDoc(course);
+    if (courseDoc.exists()) {
+      alert("Course already exists, Please sign in.");
+    } else {
+      console.log("Course does not exist, creating new course...");
+      await setDoc(getCoursePath(course), course);
+      navigateToDashboard(course);
+    }
   }
 
-  // Update course data in Firestore
+  //update course data in Firestore
   async function updateCourseData(course) {
-    const unsubscribe = getCourseDoc(course, (data) => {
-      if (data) {
-        console.log("Course exists, updating course...");
-        setDoc(getCoursePath(course), course);
-        navigateToDashboard(course);
-      } else {
-        alert("Course does not exist, Please sign in.");
-      }
-    });
-
-    return unsubscribe;
+    const courseDoc = await getCourseDoc(course);
+    if (courseDoc.exists()) {
+      console.log("Course exists, updating course...");
+      await setDoc(getCoursePath(course), course);
+      navigateToDashboard(course);
+    } else {
+      alert("Course does not exist, Please sign in.");
+    }
   }
 
-  // Delete course data in Firestore
+  //delete course data in Firestore
   async function deleteCourseData(course) {
-    const unsubscribe = getCourseDoc(course, (data) => {
-      if (data) {
-        console.log("Course exists, deleting course...");
-        setDoc(getCoursePath(course), course);
-        navigateToDashboard(course);
-      } else {
-        alert("Course does not exist, Please sign in.");
-      }
-    });
-
-    return unsubscribe;
+    const courseDoc = await getCourseDoc(course);
+    if (courseDoc.exists()) {
+      console.log("Course exists, deleting course...");
+      await setDoc(getCoursePath(course), course);
+      navigateToDashboard(course);
+    } else {
+      alert("Course does not exist, Please sign in.");
+    }
   }
 
   // Navigate to dashboard based on role
   async function navigateToDashboard(user) {
-    const unsubscribe = getUserDoc(user, (data) => {
-      if (data) {
-        if (data.role === "student") {
-          navigate("/student");
-          console.log("Navigating to student dashboard...");
-        } else if (data.role === "teacher") {
-          navigate("/instructor");
-          console.log("Navigating to teacher dashboard...");
-        }
-      } else {
-        alert("User does not exist, please sign up.");
+    const userDoc = await getUserDoc(user);
+    if (userDoc.exists()) {
+      const data = userDoc.data();
+      if (data.role === "student") {
+        // Navigate to student dashboard
+        navigate("/student");
+        console.log("Navigating to student dashboard...");
+      } else if (data.role === "teacher") {
+        //instructor
+        navigate("/instructor");
+        // Navigate to teacher dashboard
+        console.log("Navigating to teacher dashboard...");
       }
-    });
-
-    return unsubscribe;
+    } else {
+      alert("User does not exist, please sign up.");
+    }
   }
 
   // Provide Firebase context to children
@@ -266,6 +251,7 @@ function FirebaseProvider({ children }) {
     signInWithGoogle,
     signUpWithEmailPassword,
     signInWithEmailPassword,
+    uploadFile,
   };
 
   return (

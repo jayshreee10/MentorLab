@@ -198,7 +198,6 @@ export const filterOptions = {
   primaryLanguage: languageOptions,
 };
 
-
 export const lecturesControls = [
   {
     name: "title",
@@ -212,7 +211,7 @@ export const lecturesControls = [
     label: "Description",
     placeholder: "Enter the lecture description",
     type: "text",
-    componentType: "input",
+    componentType: "textarea",
   },
   {
     name: "youtubeLink",
@@ -231,10 +230,8 @@ export const lecturesControls = [
   },
 ];
 export const initialLecturesControls = {
-   title:"",
-   description:"",
-   youtubeLink:"",
-   googleForm:""
-  }
- 
-;
+  title: "",
+  description: "",
+  youtubeLink: "",
+  googleForm: "",
+};

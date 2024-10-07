@@ -1,13 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { BarChart, Book, LogOut, MonitorUp } from "lucide-react";
-import { LiaChalkboardTeacherSolid } from "react-icons/lia";
-import { MdOutlineAddToQueue } from "react-icons/md";
 import InstructorCourses from "@/components/instructor-view/courses";
-import InstructorDashboard from "@/components/instructor-view/dashboard";
 import NewCourse from "@/components/instructor-view/courses/add-new-course/NewCourse";
+import InstructorDashboard from "@/components/instructor-view/dashboard";
 import Logout from "@/components/modals/Logout";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { BarChart, Book, LogOut, MonitorUp } from "lucide-react";
+import { useState } from "react";
+import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 
 export default function Teacher() {
   const [activeTab, setActiveTab] = useState("dashboard");
