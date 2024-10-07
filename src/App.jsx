@@ -6,6 +6,7 @@ import Home from "./components/student-view/Home";
 import SelectCourses from "@/components/student-view/SelectCourses";
 import StudentViewCourseDetailsPage from "@/components/student-view/CourseDetails";
 import OpenCourse from "./components/student-view/OpenCourse";
+import Test from "./pages/Test";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="courses" element={<SelectCourses />} />
           <Route path="course-details" element={<OpenCourse />} />
         </Route>
+        <Route path="/Test" element={<Test />} />
       </Routes>
     </>
   );
