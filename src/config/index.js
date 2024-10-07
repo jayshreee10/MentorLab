@@ -173,7 +173,7 @@ export const courseLandingInitialFormData = {
   pricing: "",
   objectives: "",
   welcomeMessage: "",
-  image: "",
+  banner: "",
 };
 
 export const courseCurriculumInitialFormData = [
@@ -230,8 +230,15 @@ export const lecturesControls = [
   },
 ];
 export const initialLecturesControls = {
+  id: "",
   title: "",
   description: "",
   youtubeLink: "",
   googleForm: "",
+  fileData: { url: "", type: "" },
+};
+
+//function to generate random number 1-12
+export const getRandomNumber = () => {
+  return Math.floor(Math.random() * 12) + 1;
 };

@@ -8,7 +8,9 @@ function CommonForm({
   formData,
   setFormData,
   isButtonDisabled = false,
+  canEdit = true,
   children,
+  removeButton = false,
 }) {
   return (
     <form onSubmit={handleSubmit}>
@@ -17,11 +19,18 @@ function CommonForm({
         formControls={formControls}
         formData={formData}
         setFormData={setFormData}
+        canEdit={canEdit}
       />
       {children}
-      <Button disabled={isButtonDisabled} type="submit" className="mt-5 w-full">
-        {buttonText || "Submit"}
-      </Button>
+      {!removeButton && (
+        <Button
+          disabled={isButtonDisabled}
+          type="submit"
+          className="mt-5 w-full"
+        >
+          {buttonText || "Submit"}
+        </Button>
+      )}
     </form>
   );
 }

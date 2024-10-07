@@ -8,25 +8,41 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useFirebaseContext } from "@/context/firebase-context";
+import { useInstructorContext } from "@/context/instructor-context";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const sampleCourses = [
-  {
-    _id: "1",
-    title: "Course 1",
-    pricing: 100,
-    students: [{ studentName: "John Doe" }, { studentName: "Jane Smith" }],
-  },
-  {
-    _id: "2",
-    title: "Course 2",
-    pricing: 150,
-    students: [{ studentName: "Emily Davis" }],
-  },
-];
+import { getRandomNumber } from "../../../config/index";
 
 function Courses() {
   const navigate = useNavigate();
+  const { getAllCourses, deleteCourseData } = useFirebaseContext();
+  const { initialCourse } = useInstructorContext();
+
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    getAllCourses().then((courses) => setCourses(courses));
+  }, []);
+
+  function editCourse(index) {
+    navigate("/instructor/edit-course");
+    initialCourse(courses[index]);
+  }
+
+  function deleteCourse(index) {
+    const course = courses[index];
+    deleteCourseData(course);
+    const newCourses = [];
+
+    courses.forEach((c, i) => {
+      if (i !== index) {
+        newCourses.push(c);
+      }
+    });
+
+    setCourses(newCourses);
+  }
 
   return (
     <Card>
@@ -45,25 +61,27 @@ function Courses() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sampleCourses.length > 0 ? (
-                sampleCourses.map((course) => (
-                  <TableRow key={course._id}>
+              {courses.length > 0 ? (
+                courses.map((course, index) => (
+                  <TableRow key={course.id}>
                     <TableCell className="font-medium">
                       {course.title}
                     </TableCell>
-                    <TableCell>{course.students.length}</TableCell>
-                    <TableCell>
-                      ${course.students.length * course.pricing}
-                    </TableCell>
+                    <TableCell>{getRandomNumber()}</TableCell>
+                    <TableCell>Free</TableCell>
                     <TableCell className="text-right">
                       <Button
-                        onClick={() => navigate(`/edit-course/${course._id}`)}
+                        onClick={() => editCourse(index)}
                         variant="ghost"
                         size="sm"
                       >
                         Edit
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button
+                        onClick={() => deleteCourse(index)}
+                        variant="ghost"
+                        size="sm"
+                      >
                         Delete
                       </Button>
                     </TableCell>

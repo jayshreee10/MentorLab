@@ -1,17 +1,19 @@
 import InstructorCourses from "@/components/instructor-view/courses";
-import NewCourse from "@/components/instructor-view/courses/add-new-course/NewCourse";
 import InstructorDashboard from "@/components/instructor-view/dashboard";
 import Logout from "@/components/modals/Logout";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { useInstructorContext } from "@/context/instructor-context";
 import { BarChart, Book, LogOut, MonitorUp } from "lucide-react";
 import { useState } from "react";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
+import { useNavigate } from "react-router-dom";
 
 export default function Teacher() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showLogoutModal, setShowLogoutModal] = useState(false); // State for the logout modal
-
+  const { initialNewCourse } = useInstructorContext();
+  const navigate = useNavigate();
   const menuItems = [
     {
       icon: BarChart,
@@ -29,8 +31,8 @@ export default function Teacher() {
     {
       icon: MonitorUp,
       label: "Create Course",
-      value: "Create Course",
-      component: <NewCourse />,
+      value: "create-course",
+      component: null,
     },
     {
       icon: LogOut,
@@ -66,11 +68,16 @@ export default function Teacher() {
                 className="w-full justify-start mb-2"
                 key={menuItem.value}
                 variant={activeTab === menuItem.value ? "secondary" : "ghost"}
-                onClick={
-                  menuItem.value === "logout"
-                    ? handleLogout // Trigger logout modal
-                    : () => setActiveTab(menuItem.value) // Change tab
-                }
+                onClick={() => {
+                  if (menuItem.value === "logout") {
+                    handleLogout();
+                  } else if (menuItem.value === "create-course") {
+                    initialNewCourse();
+                    navigate("/instructor/create-course");
+                  } else {
+                    setActiveTab(menuItem.value);
+                  }
+                }}
               >
                 <menuItem.icon className="mr-2 h-4 w-4" />
                 {menuItem.label}

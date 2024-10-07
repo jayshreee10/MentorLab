@@ -1,16 +1,16 @@
 import FormControls from "@/components/common-form/form-controls";
-import { MdDeleteOutline } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { courseDetailsPageFormControls } from "@/config";
 import { useFirebaseContext } from "@/context/firebase-context";
 import { InstructorContext } from "@/context/instructor-context";
 import { useContext, useState } from "react";
+import { MdDeleteOutline } from "react-icons/md";
 
 function CourseDetails() {
-  const { courseLandingFormData, setCourseLandingFormData } =
+  const { courseDetailsData, setCourseDetailsData } =
     useContext(InstructorContext);
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(courseDetailsData.banner);
 
   const { uploadFile } = useFirebaseContext();
   const [file, setFile] = useState(null);
@@ -25,6 +25,10 @@ function CourseDetails() {
     uploadFile(file)
       .then((url) => {
         setUrl(url);
+        setCourseDetailsData({
+          ...courseDetailsData,
+          banner: url,
+        });
         setLoading(false);
       })
       .catch((error) => {
@@ -62,8 +66,8 @@ function CourseDetails() {
         </div>
         <FormControls
           formControls={courseDetailsPageFormControls}
-          formData={courseLandingFormData}
-          setFormData={setCourseLandingFormData}
+          formData={courseDetailsData}
+          setFormData={setCourseDetailsData}
         />
       </CardContent>
     </Card>

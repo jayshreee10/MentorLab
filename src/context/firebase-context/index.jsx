@@ -9,8 +9,10 @@ import {
 } from "firebase/auth";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
+  getDocs,
   getFirestore,
   setDoc,
 } from "firebase/firestore";
@@ -158,11 +160,21 @@ function FirebaseProvider({ children }) {
     return await getDoc(coursePoint);
   }
 
-  // get all courses
+  // Function to get all courses
   async function getAllCourses() {
-    const coursesCollection = collection(database, dbPaths.courses);
-    const coursesSnapshot = await coursesCollection.get();
-    return coursesSnapshot.docs.map((doc) => doc.data());
+    try {
+      const coursesCollection = collection(database, dbPaths.courses);
+      const coursesSnapshot = await getDocs(coursesCollection);
+      const result = coursesSnapshot.docs.map((doc) => doc.data());
+
+      console.log("Courses fetched successfully");
+      console.log(result);
+
+      return result;
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      alert("Failed to fetch courses, Please try again");
+    }
   }
 
   // Create user data in Firestore
@@ -187,37 +199,51 @@ function FirebaseProvider({ children }) {
 
   // Create course data in Firestore
   async function createCourseData(course) {
-    const courseDoc = await getCourseDoc(course);
-    if (courseDoc.exists()) {
-      alert("Course already exists, Please sign in.");
-    } else {
-      console.log("Course does not exist, creating new course...");
-      await setDoc(getCoursePath(course), course);
-      navigateToDashboard(course);
+    try {
+      const courseDoc = await getCourseDoc(course);
+      if (courseDoc.exists()) {
+        alert("Course already exists, Please sign in.");
+      } else {
+        console.log("Course does not exist, creating new course...");
+        await setDoc(getCoursePath(course), course);
+      }
+    } catch (error) {
+      console.error("Error creating course:", error);
+      alert("Failed to create course, Please try again");
     }
   }
 
   //update course data in Firestore
   async function updateCourseData(course) {
-    const courseDoc = await getCourseDoc(course);
-    if (courseDoc.exists()) {
-      console.log("Course exists, updating course...");
-      await setDoc(getCoursePath(course), course);
-      navigateToDashboard(course);
-    } else {
-      alert("Course does not exist, Please sign in.");
+    try {
+      const courseDoc = await getCourseDoc(course);
+      if (courseDoc.exists()) {
+        console.log("Course exists, updating course...");
+        await setDoc(getCoursePath(course), course);
+      } else {
+        alert("Course does not exist, Please sign in.");
+      }
+    } catch (error) {
+      console.error("Error updating course:", error);
+      alert("Failed to update course, Please try again");
     }
   }
 
-  //delete course data in Firestore
-  async function deleteCourseData(course) {
-    const courseDoc = await getCourseDoc(course);
-    if (courseDoc.exists()) {
-      console.log("Course exists, deleting course...");
-      await setDoc(getCoursePath(course), course);
-      navigateToDashboard(course);
-    } else {
-      alert("Course does not exist, Please sign in.");
+  // Function to delete course data in Firestore
+  async function deleteCourseData(courseId) {
+    try {
+      const courseDoc = await getCourseDoc(courseId); // Fetch the course document snapshot
+      console.log(courseDoc);
+      if (courseDoc.exists()) {
+        console.log("Course exists, deleting course...");
+        await deleteDoc(courseDoc.ref); // Use the document reference (courseDoc.ref) for deletion
+        console.log("Course deleted successfully");
+      } else {
+        alert("Course does not exist, Please sign in.");
+      }
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      alert("Failed to delete course, Please try again");
     }
   }
 
@@ -252,6 +278,10 @@ function FirebaseProvider({ children }) {
     signUpWithEmailPassword,
     signInWithEmailPassword,
     uploadFile,
+    createCourseData,
+    getAllCourses,
+    updateCourseData,
+    deleteCourseData,
   };
 
   return (

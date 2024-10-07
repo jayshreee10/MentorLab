@@ -1,12 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { InstructorContext } from "@/context/instructor-context";
 import { Text, Youtube } from "lucide-react";
-import { useState } from "react";
-import CourseCurriculum from "./course-curriculum";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CourseLanding from "./CourseDetails";
+import CourseCurriculum from "./CourseLectures";
 
-export default function InstructorDashboardPage() {
+export default function NewCourse() {
   const [activeTab, setActiveTab] = useState("Lectures");
+  const { submitCourse, updateCourse, courseId } =
+    useContext(InstructorContext);
+  const navigate = useNavigate();
+
+  function handleSubmit() {
+    if (courseId !== null) {
+      updateCourse();
+    } else {
+      submitCourse();
+    }
+    navigate("/instructor");
+  }
 
   const menuItems = [
     {
@@ -32,7 +46,7 @@ export default function InstructorDashboardPage() {
   ];
 
   return (
-    <main className="flex-1 p-8 overflow-y-auto bg-gray-100">
+    <main className="h-[100vh] flex-1 p-8 overflow-y-auto bg-gray-100">
       <div className="max-w-7xl mx-auto flex flex-col gap-5">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>
@@ -59,7 +73,9 @@ export default function InstructorDashboardPage() {
           <p className="text-xs px-5">
             Fill both Lectures and Details to submit
           </p>
-          <Button className="w-[150px]">Submit</Button>
+          <Button onClick={handleSubmit} className="w-[150px]">
+            {courseId !== null ? "Update Course" : "Submit Course"}
+          </Button>
         </div>
       </div>
       {/* <CourseLanding /> */}

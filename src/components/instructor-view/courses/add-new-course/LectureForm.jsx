@@ -1,11 +1,18 @@
 import CommonForm from "@/components/common-form";
 import { Button } from "@/components/ui/button";
-import { initialLecturesControls, lecturesControls } from "@/config";
+import { lecturesControls } from "@/config";
 import { useFirebaseContext } from "@/context/firebase-context";
+import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
 
-function LectureForm({ index }) {
+function LectureForm({ index, initialLecturesControls, canEdit }) {
   const [lectureData, setLectureData] = useState(initialLecturesControls);
+  const {
+    handleDeleteLecture,
+    handleUpdateLecture,
+    setCurrentlyEditedLectureIndex,
+  } = useInstructorContext();
+
   const [errors, setErrors] = useState({
     youtubeLink: "",
     googleForm: "",
@@ -14,12 +21,26 @@ function LectureForm({ index }) {
 
   const { uploadFile } = useFirebaseContext();
   const [file, setFile] = useState(null);
-  // const [url, setUrl] = useState("");
-  const [fileData, setFileData] = useState({
-    url: "",
-    type: "",
-  });
   const [loading, setLoading] = useState(false);
+
+  const [fileData, setFileData] = useState({
+    url: initialLecturesControls.fileData.url || "",
+    type: initialLecturesControls.fileData.type || "",
+  });
+
+  // Handle form submission
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (isFormValid) {
+      const lecture = {
+        ...lectureData,
+        fileData: fileData,
+      };
+
+      handleUpdateLecture(index, lecture);
+      console.log("Form Submitted", lecture);
+    }
+  };
 
   function removeFile() {
     setFileData({ url: "", type: "" });
@@ -75,37 +96,37 @@ function LectureForm({ index }) {
     const formIsValid =
       lectureData.title !== "" &&
       lectureData.description !== "" &&
-      validateLinks(); // Validate links when lectureData changes
+      validateLinks() &&
+      fileData.url !== "" &&
+      fileData.type !== "";
 
     setIsFormValid(formIsValid); // Update form validity
-  }, [lectureData]); // Only run validation when lectureData changes
-
-  // Handle form submission
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (isFormValid) {
-      // Submit the form if all validations pass
-      console.log("Form Submitted", lectureData);
-    }
-  };
+  }, [lectureData, fileData]); // Only run validation when lectureData changes
 
   return (
     <div className="w-full">
       <div key={index} className="border p-4 mb-4 rounded-md">
         <div className="flex gap-4 items-center">
           <h3 className="font-semibold">Lecture {index + 1}</h3>
-          <Button>Delete</Button>
+
+          {!canEdit && (
+            <Button onClick={() => setCurrentlyEditedLectureIndex(index)}>
+              Edit
+            </Button>
+          )}
+          <Button onClick={() => handleDeleteLecture(index)}>Delete</Button>
         </div>
 
         <div className="mt-4">
           <CommonForm
             formControls={lecturesControls}
+            canEdit={canEdit}
             buttonText={"Confirm & Submit Lecture"}
             formData={lectureData}
             setFormData={setLectureData}
             isButtonDisabled={!isFormValid} // Button enabled only if the form is valid
             handleSubmit={handleSubmit} // Handle form submission
+            removeButton={!canEdit} // Remove button if the form is not editable
           >
             {loading && <p>Uploading...</p>}
             {fileData.url == "" ? (
@@ -117,7 +138,7 @@ function LectureForm({ index }) {
                   onChange={(e) => setFile(e.target.files[0])}
                 />
 
-                <Button onClick={uploadLocalFile}>Upload</Button>
+                {file && <Button onClick={uploadLocalFile}>Upload</Button>}
               </div>
             ) : (
               <div className="flex gap-2">
@@ -130,9 +151,11 @@ function LectureForm({ index }) {
                 ) : (
                   <div> image</div>
                 )}
-                <button onClick={removeFile} className="">
-                  remove
-                </button>
+                {canEdit && (
+                  <button onClick={removeFile} className="">
+                    remove
+                  </button>
+                )}
               </div>
             )}
           </CommonForm>

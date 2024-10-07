@@ -9,7 +9,12 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 
-function FormControls({ formControls = [], formData, setFormData }) {
+function FormControls({
+  formControls = [],
+  formData,
+  setFormData,
+  canEdit = true,
+}) {
   function renderComponentByType(getControlItem) {
     let element = null;
     const currentControlItemValue = formData[getControlItem.name] || "";
@@ -20,6 +25,7 @@ function FormControls({ formControls = [], formData, setFormData }) {
           <Input
             id={getControlItem.name}
             name={getControlItem.name}
+            disabled={!canEdit}
             placeholder={getControlItem.placeholder}
             type={getControlItem.type}
             value={currentControlItemValue}
@@ -35,6 +41,7 @@ function FormControls({ formControls = [], formData, setFormData }) {
       case "select":
         element = (
           <Select
+            disabled={!canEdit}
             onValueChange={(value) =>
               setFormData({
                 ...formData,
@@ -63,6 +70,7 @@ function FormControls({ formControls = [], formData, setFormData }) {
           <Textarea
             id={getControlItem.name}
             name={getControlItem.name}
+            disabled={!canEdit}
             placeholder={getControlItem.placeholder}
             value={currentControlItemValue}
             onChange={(event) =>
@@ -80,6 +88,7 @@ function FormControls({ formControls = [], formData, setFormData }) {
           <Input
             id={getControlItem.name}
             name={getControlItem.name}
+            disabled={!canEdit}
             placeholder={getControlItem.placeholder}
             type={getControlItem.type}
             value={currentControlItemValue}
