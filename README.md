@@ -1,44 +1,47 @@
 <p align="center">
   <a href="https://github.com/iamsahebgiri/betabuzz">
-    <img alt="MentorLab" height="80" src="https://github.com/user-attachments/assets/8e22fe9c-9c46-487e-a3a2-37563a9ddbdf">
+    <img alt="MentorLab Logo" height="80" src="https://github.com/user-attachments/assets/8e22fe9c-9c46-487e-a3a2-37563a9ddbdf">
   </a>
 </p>
+
 <h1 align="center">Mentor Lab</h1>
 
 <div align="center">
-Creating a buzz around the latest beta products
+  <strong>Creating a buzz around the latest beta products</strong>
 </div>
 
 <br />
 
 ## ⚡️ Introduction
 
-**Mentor Lab** is a modern **LMS: Learning Management System** platform built with **React**, **Vite**, **Tailwind CSS**, **ShadCN**, and **Firebase**.
-It offers two distinct portals: one for instructors and another for students.
+**Mentor Lab** is a modern **Learning Management System (LMS)** built using cutting-edge technologies like **React**, **Vite**, **Tailwind CSS**, **ShadCN**, and **Firebase**. It provides two distinct portals, catering to instructors and students alike.
 
-Instructors can create and upload course materials in various formats, including PDFs, PowerPoint presentations (PPTs), quizzes, and YouTube video links.
-Students can easily browse, enroll in courses, and access content from different instructors across a variety of subjects.
-With its intuitive interface, real-time updates, and flexible content management, Mentor Lab simplifies the learning process for both educators and learners.
+- **Instructors** can create and upload course materials in multiple formats such as PDFs, PowerPoint presentations (PPTs), quizzes, and YouTube video links.
+- **Students** can explore courses, enroll, and learn from various instructors across different subjects.
+
+With its intuitive interface, real-time updates, and flexible content management, Mentor Lab simplifies and enhances the learning process for educators and learners.
 
 ## 🎯 Features
 
-- FireBase Authentication
-- Storing user generated content in FireStore
+- **Firebase Authentication** for secure user login and management.
+- **Firestore** for storing user-generated content and course data.
+- User-friendly interface for both **instructors** and **students**.
+- Real-time updates for dynamic learning experiences.
 
-## 📁 Folder
+## 📁 Folder Structure
 
-Here's the folder structure of the api and app:
+Below is the folder structure of the `MentorLab` project:
 
 ```sh
 MentorLab
 ├── src
 │   ├── components
 │   │   ├── common-form
-│   │   │   ├──form-controls.jsx
-│   │   │   └──index.jsx
+│   │   │   ├── form-controls.jsx
+│   │   │   └── index.jsx
 │   │   ├── instructor-view
-│   │   │   ├──courses
-│   │   │   └──dashboard
+│   │   │   ├── courses
+│   │   │   └── dashboard
 │   │   ├── landing
 │   │   ├── modals
 │   │   ├── student-view
@@ -59,75 +62,77 @@ MentorLab
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css
-
-
-
 ```
 
 ## ⚙️ Installation
 
-Make sure you have [Node.js](https://nodejs.org/en/download/) installed.
-Run this followed commands:
+Ensure you have [Node.js](https://nodejs.org/en/download/) installed before proceeding.
 
-To install the api
+To install and run the MentorLab web application:
 
-```bash
-# Change directory to api
-cd api
+1. Clone the repository and navigate to the project folder:
 
-# Copy environment variables and Make sure to change them
-cp .env.example .env
+   ```bash
+   git clone https://github.com/jayshreee10/MentorLab.git
+   cd MentorLab
+   ```
 
-# Install dependencies (only the first time)
-npm install
+2. Set up environment variables:
 
-# Run the local server at localhost:8000
-npm run dev
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-To run the web app
+   Update `.env` with your Firebase credentials and other configurations.
 
-```sh
-# Change directory to app
-cd app
-# Install dependencies (only the first time)
-npm install
+3. Install dependencies:
 
-# Run the local server at localhost:3000
-npm run dev
+   ```bash
+   npm install
+   ```
 
-# Build for production in the dist/ directory
-npm run build
-```
+4. Run the development server:
 
-## 🌱 Third Party Libraries
+   ```bash
+   npm run dev
+   ```
 
-- [vercel/next.js](https://github.com/vercel/next.js)
-- [expressjs/express](https://github.com/expressjs/express)
-- [tailwindlabs/tailwindcss](https://github.com/tailwindlabs/tailwindcss)
+   The app will be available at `http://localhost:8000`.
 
-## 📚️ Roadmap
+5. To build the app for production:
 
-- [ ] Login with Google and Github
-- [ ] AI Integration for creating product description
+   ```bash
+   npm run build
+   ```
 
-## ❤️ Acknowledgements
+   The optimized output will be in the `dist/` directory.
 
-- [plane](https://github.com/makeplane/plane)
+## 🌱 Third-Party Libraries
 
-## ‍💻 Author
+MentorLab leverages several powerful libraries and frameworks:
 
-- [@iamsahebgiri](https://github.com/iamsahebgiri)
+- [Firebase](https://console.firebase.google.com) - For authentication, real-time database, and hosting.
+- [Tailwind CSS](https://tailwindcss.com/docs/installation) - Utility-first CSS framework for rapid UI development.
+- [ShadCN](https://ui.shadcn.com/docs/installation/vite) - UI components for building modern React applications.
 
-## ⭐️ Contribute
+## 📚 Roadmap
 
-If you want to say thank you and/or support the active development of betabuzz:
+Planned features and improvements:
 
-1. Add a GitHub Star to the project.
-2. Tweet about the project on your Twitter.
-3. Write a review or tutorial on Medium, Dev.to or personal blog.
-4. Support the project by donating a cup of coffee.
+- [ ] Integration with Google and GitHub for seamless login.
+- [ ] AI-based product description generator for enhancing course content.
 
-## 🧾 License
+Stay tuned for more exciting updates!
 
-MIT License Copyright (c) 2023 [Saheb Giri](https://github.com/iamsahebgiri).
+## 👨‍💻 Author
+
+- **Jayshree Sadangi** - [@Jayshree10](https://github.com/jayshreee10)
+
+## ⭐️ Contributing
+
+Want to support the active development of **Mentor Lab**? Here’s how:
+
+1. Give the repository a **star** on GitHub.
+2. Share the project on social media like **Twitter** or **LinkedIn**.
+3. Write a **review** or tutorial on platforms like **Medium** or **Dev.to**.
+4. Buy me a coffee to show your appreciation!
