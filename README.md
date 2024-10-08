@@ -11,11 +11,9 @@ Creating a buzz around the latest beta products
 
 <br />
 
-
-
 ## ⚡️ Introduction
 
-**Mentor Lab** is a modern **LMS: Learning Management System**  platform built with **React**, **Vite**, **Tailwind CSS**, **ShadCN**, and **Firebase**. 
+**Mentor Lab** is a modern **LMS: Learning Management System** platform built with **React**, **Vite**, **Tailwind CSS**, **ShadCN**, and **Firebase**.
 It offers two distinct portals: one for instructors and another for students.
 
 Instructors can create and upload course materials in various formats, including PDFs, PowerPoint presentations (PPTs), quizzes, and YouTube video links.
@@ -27,7 +25,6 @@ With its intuitive interface, real-time updates, and flexible content management
 - FireBase Authentication
 - Storing user generated content in FireStore
 
-
 ## 📁 Folder
 
 Here's the folder structure of the api and app:
@@ -36,29 +33,29 @@ Here's the folder structure of the api and app:
 MentorLab
 ├── src
 │   ├── components
-│   │   ├── Header
-│   │   ├── Footer
-│   │   ├── CourseCard
-│   │   ├── CourseForm
-│   │   ├── InstructorDashboard
-│   │   ├── StudentDashboard
-│   │   └── index.js
+│   │   ├── common-form
+│   │   │   ├──form-controls.jsx
+│   │   │   └──index.jsx
+│   │   ├── instructor-view
+│   │   │   ├──courses
+│   │   │   └──dashboard
+│   │   ├── landing
+│   │   ├── modals
+│   │   ├── student-view
+│   │   └── ui
 │   ├── config
-│   │   └── firebaseConfig.js
-│   ├── context
-│   │   ├── AuthContext
-│   │   ├── CourseContext
-│   │   ├── UserContext
-│   │   ├── ThemeContext
 │   │   └── index.js
+│   ├── context
+│   │   ├── authContext
+│   │   ├── firebase-context
+│   │   └── instructor-context
 │   ├── lib
-│   │   └── api.js
+│   │   └── utils.js
 │   ├── pages
-│   │   ├── Home.jsx
-│   │   ├── CourseDetails.jsx
-│   │   ├── InstructorPortal.jsx
-│   │   ├── StudentPortal.jsx
-│   │   └── NotFound.jsx
+│   │   ├── Auth.jsx
+│   │   ├── Hero.jsx
+│   │   ├── Student.jsx
+│   │   └── Teacher.jsx
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css
