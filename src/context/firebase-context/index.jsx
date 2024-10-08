@@ -157,6 +157,13 @@ function FirebaseProvider({ children }) {
   // Helper function to get course document
   async function getCourseDoc(course) {
     const coursePoint = getCoursePath(course);
+    console.log(coursePoint);
+    return await getDoc(coursePoint);
+  }
+
+  //get course from id
+  async function getCourseDocFromId(courseId) {
+    const coursePoint = doc(database, dbPaths.courses, courseId);
     return await getDoc(coursePoint);
   }
 
@@ -247,6 +254,24 @@ function FirebaseProvider({ children }) {
     }
   }
 
+  //get course data in Firestore from id
+  async function getCourseData(courseId) {
+    try {
+      console.log("Fetching course...");
+      console.log(courseId);
+      const courseDoc = await getCourseDocFromId(courseId);
+      if (courseDoc.exists()) {
+        console.log("Course exists, fetching course...");
+        return courseDoc.data();
+      } else {
+        alert("Course does not exist, Please sign in.");
+      }
+    } catch (error) {
+      console.error("Error fetching course:", error);
+      alert("Failed to fetch course, Please try again");
+    }
+  }
+
   // Navigate to dashboard based on role
   async function navigateToDashboard(user) {
     const userDoc = await getUserDoc(user);
@@ -282,6 +307,7 @@ function FirebaseProvider({ children }) {
     getAllCourses,
     updateCourseData,
     deleteCourseData,
+    getCourseData,
   };
 
   return (

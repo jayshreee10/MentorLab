@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"; // Ensure these imports are correct
-import { Youtube, Text } from "lucide-react"; // You may change the icons as per your needs
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Ensure these imports are correct
+import { useInstructorContext } from "@/context/instructor-context";
+import { Text, Youtube } from "lucide-react"; // You may change the icons as per your needs
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import StudentViewCourseDetailsPage from "./CourseDetails"; // Adjust the import path as necessary
-import NewStudentCourseProgressPage from "./CourseProgress"; // Adjust the import path as necessary
 
 export default function OpenCourse() {
   const [activeTab, setActiveTab] = useState("CourseDetails");
+  const { courseDetailsData, courseLectures, courseId } =
+    useInstructorContext();
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -18,7 +22,7 @@ export default function OpenCourse() {
       icon: Text, // You can change the icon as needed
       label: "Course Progress",
       value: "CourseProgress",
-      component: <NewStudentCourseProgressPage />, // Render the course progress component
+      component: null, // Render the course progress component
     },
   ];
 
@@ -31,7 +35,13 @@ export default function OpenCourse() {
               <TabsTrigger
                 value={menuItem.value}
                 key={menuItem.value}
-                onClick={() => setActiveTab(menuItem.value)}
+                onClick={() => {
+                  if (menuItem.value === "CourseProgress") {
+                    navigate("/student/course-lectures?id=" + courseId);
+                  } else {
+                    setActiveTab(menuItem.value);
+                  }
+                }}
               >
                 <menuItem.icon className="mr-2 h-4 w-4" />
                 {menuItem.label}

@@ -1,37 +1,47 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // import VideoPlayer from "@/components/video-player";
+import { useInstructorContext } from "@/context/instructor-context";
 import { Check, ChevronLeft, ChevronRight, Play } from "lucide-react";
-import Confetti from "react-confetti";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import YoutubeEmbed from "./YoutubeEmbed";
 
 function NewStudentCourseProgressPage() {
   const navigate = useNavigate();
   const [lockCourse, setLockCourse] = useState(false);
-  const [currentLecture, setCurrentLecture] = useState(null);
+  const [currentLecture, setCurrentLecture] = useState(0);
   const [showCourseCompleteDialog, setShowCourseCompleteDialog] =
     useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
 
+  const {
+    courseDetailsData,
+    courseLectures,
+    fetchCourseDataAndInitial,
+    courseId,
+  } = useInstructorContext();
+
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const id = searchParams.get("id");
+    console.log("id", id);
+    if (courseId == null) {
+      // navigate("/student/course-details", { state: { id } });
+
+      fetchCourseDataAndInitial(id);
+    }
+  }, [courseId]);
+
   return (
-    <div className="flex flex-col h-screen bg-[#1c1d1f] text-white">
-      {showConfetti && <Confetti />}
+    <div className="flex flex-col  bg-[#1c1d1f] text-white">
       <div className="flex items-center justify-between p-4 bg-[#1c1d1f] border-b border-gray-700">
         <div className="flex items-center space-x-4">
           <Button
-            onClick={() => navigate("/student-courses")}
-            className="text-black"
+            onClick={() => navigate("/student")}
+            className="text-white"
             variant="ghost"
             size="sm"
           >
@@ -39,8 +49,7 @@ function NewStudentCourseProgressPage() {
             Back to My Courses Page
           </Button>
           <h1 className="text-lg font-bold hidden md:block">
-            {/* Replace with dynamic course title */}
-            Course Title
+            {courseDetailsData?.title}
           </h1>
         </div>
         <Button onClick={() => setIsSideBarOpen(!isSideBarOpen)}>
@@ -52,29 +61,54 @@ function NewStudentCourseProgressPage() {
         </Button>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 ">
         <div
           className={`flex-1 ${
             isSideBarOpen ? "mr-[400px]" : ""
           } transition-all duration-300`}
         >
-          {/* <VideoPlayer
-            width="100%"
-            height="500px"
-            url={currentLecture?.videoUrl || "default-video-url"}
-            onProgressUpdate={setCurrentLecture}
-            progressData={currentLecture}
-          /> */}
-          <div className="p-6 bg-[#1c1d1f]">
+          <div className="p-6 bg-[#1c1d1f] w-full">
             <h2 className="text-2xl font-bold mb-2">
-              {/* Replace with dynamic lecture title */}
-              Lecture Title
+              {courseLectures[currentLecture]?.title}
             </h2>
+            <YoutubeEmbed url={courseLectures[currentLecture]?.youtubeLink} />
+            <h2 className="text-2xl pt-4">Description</h2>
+            <h4>{courseLectures[currentLecture]?.description}</h4>
+            {
+              //google form link for quiz courseLectures[currentLecture].googleForm
+              <Button
+                className="mt-4 bg-white text-black  hover:black hover:text-white"
+                onClick={() => {
+                  //courseLectures[currentLecture].googleForm
+                  window.open(
+                    courseLectures[currentLecture].googleForm,
+                    "_blank"
+                  );
+                }}
+              >
+                Take Quiz
+              </Button>
+            }
+            {
+              //google form link for quiz courseLectures[currentLecture].googleForm
+              <Button
+                className="mt-4 bg-white text-black ml-5 hover:black hover:text-white"
+                onClick={() => {
+                  //courseLectures[currentLecture].googleForm
+                  window.open(
+                    courseLectures[currentLecture].fileData.url,
+                    "_blank"
+                  );
+                }}
+              >
+                Download Material
+              </Button>
+            }
           </div>
         </div>
 
         <div
-          className={`fixed top-[64px] right-0 bottom-0 w-[400px] bg-[#1c1d1f] border-l border-gray-700 transition-all duration-300 ${
+          className={`fixed top-[150px] right-0 bottom-0 w-[400px] bg-[#1c1d1f] border-l border-gray-700 transition-all duration-300 ${
             isSideBarOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
@@ -97,15 +131,26 @@ function NewStudentCourseProgressPage() {
             <TabsContent value="content">
               <ScrollArea className="h-full">
                 <div className="p-4 space-y-4">
-                  {/* Replace with dynamic curriculum data */}
-                  <div className="flex items-center space-x-2 text-sm text-white font-bold cursor-pointer">
-                    <Play className="h-4 w-4" />
-                    <span>Lecture 1 Title</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-white font-bold cursor-pointer">
-                    <Check className="h-4 w-4 text-green-500" />
-                    <span>Lecture 2 Title</span>
-                  </div>
+                  {courseLectures.map((lecture, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setCurrentLecture(index)}
+                      className="flex items-center space-x-2 text-sm text-white font-bold cursor-pointer"
+                    >
+                      {lecture.isCompleted ? (
+                        <Check className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <Play className="h-4 w-4" />
+                      )}
+                      <span
+                        style={{
+                          color: currentLecture == index ? "#8e8f90" : "",
+                        }}
+                      >
+                        {lecture.title}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </ScrollArea>
             </TabsContent>
@@ -115,8 +160,7 @@ function NewStudentCourseProgressPage() {
                 <div className="p-4">
                   <h2 className="text-xl font-bold mb-4">About this course</h2>
                   <p className="text-gray-400">
-                    {/* Replace with dynamic course description */}
-                    This is a brief description of the course.
+                    {courseDetailsData?.description}
                   </p>
                 </div>
               </ScrollArea>
@@ -124,36 +168,6 @@ function NewStudentCourseProgressPage() {
           </Tabs>
         </div>
       </div>
-
-      <Dialog open={lockCourse}>
-        <DialogContent className="sm:w-[425px]">
-          <DialogHeader>
-            <DialogTitle>You can't view this page</DialogTitle>
-            <DialogDescription>
-              Please purchase this course to get access
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={showCourseCompleteDialog}>
-        <DialogContent showOverlay={false} className="sm:w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Congratulations!</DialogTitle>
-            <DialogDescription className="flex flex-col gap-3">
-              <Label>You have completed the course</Label>
-              <div className="flex flex-row gap-3">
-                <Button onClick={() => navigate("/student-courses")}>
-                  My Courses Page
-                </Button>
-                <Button onClick={() => setCurrentLecture(null)}>
-                  Rewatch Course
-                </Button>
-              </div>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

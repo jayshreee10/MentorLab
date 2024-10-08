@@ -9,9 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useFirebaseContext } from "@/context/firebase-context";
+import { useInstructorContext } from "@/context/instructor-context";
 import { ArrowUpDownIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const filterOptions = {
@@ -34,39 +35,16 @@ function SelectCourses() {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
   const [loadingState, setLoadingState] = useState(true);
-  const [courseList, setCourseList] = useState([]);
+
   const navigate = useNavigate();
+  const { getAllCourses, deleteCourseData } = useFirebaseContext();
+  const { initialCourse } = useInstructorContext();
+
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    // Fetch the list of courses based on filters and sort options
-    // This is a placeholder for the fetch logic.
-    setTimeout(() => {
-      setCourseList([
-        {
-          _id: 1,
-          title: "Course 1",
-          instructorName: "Instructor 1",
-          curriculum: [{ id: 1, title: "Lecture 1" }],
-          level: "beginner",
-          pricing: 29.99,
-          image: "course1-image-url",
-        },
-        {
-          _id: 2,
-          title: "Course 2",
-          instructorName: "Instructor 2",
-          curriculum: [
-            { id: 1, title: "Lecture 1" },
-            { id: 2, title: "Lecture 2" },
-          ],
-          level: "intermediate",
-          pricing: 49.99,
-          image: "course2-image-url",
-        },
-      ]);
-      setLoadingState(false);
-    }, 1000);
-  }, [filters, sort]);
+    getAllCourses().then((courses) => setCourses(courses));
+  }, []);
 
   function handleFilterOnChange(getSectionId, getCurrentOption) {
     let cpyFilters = { ...filters };
@@ -141,26 +119,25 @@ function SelectCourses() {
               </DropdownMenuContent>
             </DropdownMenu>
             <span className="text-sm text-black font-bold">
-              {courseList.length} Results
+              {courses.length} Results
             </span>
           </div>
           <div className="space-y-4">
-            {loadingState ? (
-              <Skeleton />
-            ) : courseList.length > 0 ? (
-              courseList.map((courseItem) => (
+            {courses.length > 0 ? (
+              courses.map((courseItem, index) => (
                 <Card
-                  key={courseItem._id}
+                  key={courseItem.id}
                   className="cursor-pointer"
-                  onClick={() =>
-                    // console.log(`Navigating to course ${courseItem._id}`)
-                    navigate("/student/course-details")
-                  }
+                  onClick={() => {
+                    initialCourse(courses[index]);
+                    const id = courses[index].id;
+                    navigate("/student/course-details?id=" + id);
+                  }}
                 >
                   <CardContent className="flex gap-4 p-4">
                     <div className="w-48 h-32 flex-shrink-0">
                       <img
-                        src={courseItem.image}
+                        src={courseItem.banner}
                         className="w-full h-full object-cover"
                         alt="course"
                       />
@@ -171,9 +148,7 @@ function SelectCourses() {
                       </CardTitle>
                       <p className="text-sm text-gray-600 mb-1">
                         Created By{" "}
-                        <span className="font-bold">
-                          {courseItem.instructorName}
-                        </span>
+                        <span className="font-bold"> Instructor</span>
                       </p>
                       <p className="text-[16px] text-gray-600 mt-3 mb-2">
                         {courseItem.curriculum.length}{" "}

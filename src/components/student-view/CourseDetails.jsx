@@ -1,21 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { CheckCircle, Globe, Lock, PlayCircle } from "lucide-react";
+import { CheckCircle, Globe, PlayCircle } from "lucide-react";
 // import VideoPlayer from "@/components/video-player";
+import { useInstructorContext } from "@/context/instructor-context";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function StudentViewCourseDetailsPage() {
+  const {
+    courseDetailsData,
+    courseLectures,
+    courseId,
+    fetchCourseDataAndInitial,
+  } = useInstructorContext();
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    if (courseId == null) {
+      // navigate("/student/course-details", { state: { id } });
+      const id = searchParams.get("id");
+      console.log("id", id);
+      fetchCourseDataAndInitial(id);
+    }
+  }, [courseId]);
+
   const studentViewCourseDetails = {
     title: "Course Title",
     subtitle: "Course Subtitle",
-    instructorName: "Instructor Name",
+    instructorName: "Hemant Joshi",
     date: "2023-09-15T12:34:56Z",
     primaryLanguage: "English",
     students: [1, 2, 3],
@@ -33,16 +44,14 @@ function StudentViewCourseDetailsPage() {
     <div className=" mx-auto p-4">
       {/* Course Info Section */}
       <div className="bg-gray-900 text-white p-8 rounded-t-lg">
-        <h1 className="text-3xl font-bold mb-4">
-          {studentViewCourseDetails?.title}
-        </h1>
-        <p className="text-xl mb-4">{studentViewCourseDetails?.subtitle}</p>
+        <h1 className="text-3xl font-bold mb-4">{courseDetailsData?.title}</h1>
+        <p className="text-xl mb-4">{courseDetailsData?.subtitle}</p>
         <div className="flex items-center space-x-4 mt-2 text-sm">
           <span>Created By {studentViewCourseDetails?.instructorName}</span>
           <span>Created On {studentViewCourseDetails?.date.split("T")[0]}</span>
           <span className="flex items-center">
             <Globe className="mr-1 h-4 w-4" />
-            {studentViewCourseDetails?.primaryLanguage}
+            {courseDetailsData?.primaryLanguage}
           </span>
           <span>
             {studentViewCourseDetails?.students.length}{" "}
@@ -63,7 +72,7 @@ function StudentViewCourseDetailsPage() {
             </CardHeader>
             <CardContent>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {studentViewCourseDetails?.objectives
+                {courseDetailsData?.objectives
                   .split(",")
                   .map((objective, index) => (
                     <li key={index} className="flex items-start">
@@ -80,7 +89,7 @@ function StudentViewCourseDetailsPage() {
             <CardHeader>
               <CardTitle>Course Description</CardTitle>
             </CardHeader>
-            <CardContent>{studentViewCourseDetails?.description}</CardContent>
+            <CardContent>{courseDetailsData?.description}</CardContent>
           </Card>
 
           {/* Course Curriculum Section */}
@@ -89,25 +98,19 @@ function StudentViewCourseDetailsPage() {
               <CardTitle>Course Curriculum</CardTitle>
             </CardHeader>
             <CardContent>
-              {studentViewCourseDetails?.curriculum?.map(
-                (curriculumItem, index) => (
-                  <li
-                    className={`${
-                      curriculumItem?.freePreview
-                        ? "cursor-pointer"
-                        : "cursor-not-allowed"
-                    } flex items-center mb-4`}
-                    key={index}
-                  >
-                    {curriculumItem?.freePreview ? (
-                      <PlayCircle className="mr-2 h-4 w-4" />
-                    ) : (
-                      <Lock className="mr-2 h-4 w-4" />
-                    )}
-                    <span>{curriculumItem?.title}</span>
-                  </li>
-                )
-              )}
+              {courseLectures?.map((curriculumItem, index) => (
+                <li
+                  className={`${
+                    curriculumItem?.freePreview
+                      ? "cursor-pointer"
+                      : "cursor-not-allowed"
+                  } flex items-center mb-4`}
+                  key={index}
+                >
+                  <PlayCircle className="mr-2 h-4 w-4" />
+                  <span>{curriculumItem?.title}</span>
+                </li>
+              ))}
             </CardContent>
           </Card>
         </main>
@@ -118,10 +121,15 @@ function StudentViewCourseDetailsPage() {
             <CardContent className="p-6">
               <div className="aspect-video mb-4 rounded-lg flex items-center justify-center">
                 {/* <VideoPlayer url="video-url" width="450px" height="200px" /> */}
+                <img
+                  src={courseDetailsData?.banner}
+                  alt="course"
+                  className="w-[450px] h-[450px] object-cover rounded-lg"
+                />
               </div>
               <div className="mb-4">
                 <span className="text-3xl font-bold">
-                  ${studentViewCourseDetails?.pricing}
+                  ${courseDetailsData?.pricing}
                 </span>
               </div>
               <Button className="w-full">Buy Now</Button>
@@ -129,25 +137,6 @@ function StudentViewCourseDetailsPage() {
           </Card>
         </aside>
       </div>
-
-      {/* Course Preview Dialog */}
-      <Dialog open={false}>
-        <DialogContent className="w-[800px]">
-          <DialogHeader>
-            <DialogTitle>Course Preview</DialogTitle>
-          </DialogHeader>
-          <div className="aspect-video rounded-lg flex items-center justify-center">
-            {/* <VideoPlayer url="video-preview-url" width="450px" height="200px" /> */}
-          </div>
-          <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

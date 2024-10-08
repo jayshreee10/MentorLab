@@ -23,7 +23,15 @@ export default function InstructorProvider({ children }) {
 
   const [courseId, setCourseId] = useState(null);
 
-  const { createCourseData, updateCourseData } = useFirebaseContext();
+  const { createCourseData, updateCourseData, getCourseData } =
+    useFirebaseContext();
+
+  function fetchCourseDataAndInitial(courseId) {
+    //fetch course data and initial
+    getCourseData(courseId).then((course) => {
+      initialCourse(course);
+    });
+  }
 
   function initialCourse(course) {
     setCourseId(course.id);
@@ -160,6 +168,7 @@ export default function InstructorProvider({ children }) {
         setCourseId,
         courseId,
         initialNewCourse,
+        fetchCourseDataAndInitial,
       }}
     >
       {children}

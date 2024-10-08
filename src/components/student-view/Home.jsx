@@ -1,10 +1,21 @@
 import { courseCategories } from "@/config";
-import Ad from "../../../public/Ad.png";
-import { Button } from "../ui/button";
+import { useInstructorContext } from "@/context/instructor-context";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Ad from "../../../public/Ad.png";
+import { useFirebaseContext } from "../../context/firebase-context/index";
+import { Button } from "../ui/button";
 
 function StudentHomePage() {
   const navigate = useNavigate();
+  const { getAllCourses, deleteCourseData } = useFirebaseContext();
+  const { initialCourse } = useInstructorContext();
+
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    getAllCourses().then((courses) => setCourses(courses));
+  }, []);
   return (
     <div className="h-screen w-screen bg-white">
       {/* Ad Section */}
@@ -40,22 +51,32 @@ function StudentHomePage() {
       <section className="py-12 px-4 lg:px-8">
         <h2 className="text-2xl font-bold mb-6">Featured Courses</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Placeholder for courses */}
-          {/* Example card structure */}
-          <div className="border rounded-lg overflow-hidden shadow cursor-pointer">
-            <img
-              src={Ad}
-              width={300}
-              height={150}
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="font-bold mb-2">Course Title</h3>
-              <p className="text-sm text-gray-700 mb-2">Instructor Name</p>
-              <p className="font-bold text-[16px]">Free</p>{" "}
-              {/* Replace with actual price */}
-            </div>
-          </div>
+          {courses.map((course, index) => {
+            return (
+              <div
+                key={index}
+                className="border rounded-lg overflow-hidden shadow cursor-pointer"
+                //          navigate("/student/course-lectures?id=" + courseId);
+                onClick={() => {
+                  initialCourse(course);
+                  navigate("/student/course-details?id=" + course.id);
+                }}
+              >
+                <img
+                  src={course.banner}
+                  width={300}
+                  height={150}
+                  className="w-full h-40 object-cover"
+                />
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">{course.title}</h3>
+                  <p className="text-sm text-gray-700 mb-2">Hemant Joshi</p>
+                  <p className="font-bold text-[16px]">Free</p>
+                </div>
+              </div>
+            );
+          })}
+
           {/* You can repeat the card structure or map over actual course data */}
         </div>
       </section>

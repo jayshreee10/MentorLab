@@ -1,6 +1,7 @@
 import NewCourse from "@/components/instructor-view/courses/add-new-course/NewCourse";
 import SelectCourses from "@/components/student-view/SelectCourses";
 import { Route, Routes } from "react-router-dom";
+import NewStudentCourseProgressPage from "./components/student-view/CourseProgress";
 import Home from "./components/student-view/Home";
 import OpenCourse from "./components/student-view/OpenCourse";
 import Hero from "./pages/Hero";
@@ -20,6 +21,10 @@ function App() {
           <Route index element={<Home />} />
           <Route path="courses" element={<SelectCourses />} />
           <Route path="course-details" element={<OpenCourse />} />
+          <Route
+            path="course-lectures"
+            element={<NewStudentCourseProgressPage />}
+          />
         </Route>
         <Route path="/Test" element={<Test />} />
       </Routes>

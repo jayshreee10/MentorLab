@@ -8,7 +8,7 @@ function Header() {
     <div>
       <header className="flex items-center justify-between p-4 border-b relative">
         <div className="flex items-center space-x-4">
-          <Link to="/home" className="flex items-center hover:text-black">
+          <Link to="/student" className="flex items-center hover:text-black">
             <GraduationCap className="h-8 w-8 mr-4" />
             <span className="font-extrabold md:text-xl text-[14px]">
               Student Portal
@@ -27,9 +27,11 @@ function Header() {
         <div className="flex items-center space-x-4">
           <div className="flex gap-4 items-center">
             <div className="flex cursor-pointer items-center gap-3">
-              <span className="font-extrabold md:text-xl text-[14px]">
-                My Courses
-              </span>
+              <Link to="/student/courses" className="flex items-center">
+                <span className="font-extrabold md:text-xl text-[14px]">
+                  My Courses
+                </span>
+              </Link>
               <TvMinimalPlay className="w-8 h-8" />
             </div>
             <Button>Logout</Button>
