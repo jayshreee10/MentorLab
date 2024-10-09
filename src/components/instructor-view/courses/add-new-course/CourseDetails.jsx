@@ -47,20 +47,24 @@ function CourseDetails() {
           {loading && <p>Uploading...</p>}
           {url == "" ? (
             <div className="mb-5">
-              <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
 
               <Button onClick={uploadLocalFile}>Upload</Button>
             </div>
           ) : (
-            <div className="flex flex-col-reverse items-end">
+            <div className="relative flex flex-col-reverse items-end">
               <img src={url} />
-              <button
+              <div
+                className="absolute bg-gray-200 hover:bg-black hover:text-white rounded-full top-2 right-2 size-[40px] flex items-center justify-center"
                 onClick={removeImage}
-                className=" text-black"
                 title="remove"
               >
                 <MdDeleteOutline size={24} />
-              </button>
+              </div>
             </div>
           )}
         </div>

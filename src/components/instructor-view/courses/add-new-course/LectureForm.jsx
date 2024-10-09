@@ -4,6 +4,11 @@ import { lecturesControls } from "@/config";
 import { useFirebaseContext } from "@/context/firebase-context";
 import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
+import { FaImage } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { BsFiletypePpt } from "react-icons/bs";
+import { FaRegFilePdf } from "react-icons/fa";
 
 function LectureForm({ index, initialLecturesControls, canEdit }) {
   const [lectureData, setLectureData] = useState(initialLecturesControls);
@@ -141,20 +146,39 @@ function LectureForm({ index, initialLecturesControls, canEdit }) {
                 {file && <Button onClick={uploadLocalFile}>Upload</Button>}
               </div>
             ) : (
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center pt-5">
                 {fileData.type === "pdf" ? (
-                  <div>pdf</div>
+                  <div className="p-3 flex gap-2 items-center">
+                    <FaRegFilePdf size={24} />
+                    <span className="text-xs font-semibold">
+                      {" "}
+                      pdf attached{" "}
+                    </span>
+                  </div>
                 ) : fileData.type === "ppt" || fileData.type === "pptx" ? (
-                  <div>ppt</div>
+                  <div className="p-3 flex gap-2 items-center">
+                    <BsFiletypePpt size={24} />
+                    <span className="text-xs font-semibold">
+                      ppt attached
+                    </span>{" "}
+                  </div>
                 ) : fileData.type === "doc" || fileData.type === "docx" ? (
-                  <div>doc</div>
+                  <div className="p-3 flex gap-2 items-center">
+                    <IoDocumentTextOutline size={24} />{" "}
+                    <span className="text-xs font-semibold">doc attached</span>
+                  </div>
                 ) : (
-                  <div> image</div>
+                  <div className="p-3 flex gap-2 items-center">
+                    <FaImage size={24} />{" "}
+                    <span className="text-xs font-semibold">
+                      image attached
+                    </span>
+                  </div>
                 )}
                 {canEdit && (
-                  <button onClick={removeFile} className="">
-                    remove
-                  </button>
+                  <Button variant="ghost" onClick={removeFile} title="remove">
+                    <MdDeleteOutline size={24} />
+                  </Button>
                 )}
               </div>
             )}

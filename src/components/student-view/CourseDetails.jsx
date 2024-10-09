@@ -4,7 +4,7 @@ import { CheckCircle, Globe, PlayCircle } from "lucide-react";
 // import VideoPlayer from "@/components/video-player";
 import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function StudentViewCourseDetailsPage() {
   const {
@@ -22,6 +22,8 @@ function StudentViewCourseDetailsPage() {
       fetchCourseDataAndInitial(id);
     }
   }, [courseId]);
+
+  const navigate = useNavigate();
 
   const studentViewCourseDetails = {
     title: "Course Title",
@@ -41,8 +43,14 @@ function StudentViewCourseDetailsPage() {
   };
 
   return (
-    <div className=" mx-auto p-4">
+    <div className="p-4">
       {/* Course Info Section */}
+      <div
+        className="absolute top-20 left-5 text-sm font-semibold cursor-pointer"
+        onClick={() => navigate("/student/courses")}
+      >
+        {"<-"}Back
+      </div>
       <div className="bg-gray-900 text-white p-8 rounded-t-lg">
         <h1 className="text-3xl font-bold mb-4">{courseDetailsData?.title}</h1>
         <p className="text-xl mb-4">{courseDetailsData?.subtitle}</p>
@@ -64,9 +72,9 @@ function StudentViewCourseDetailsPage() {
 
       {/* Main Content and Sidebar */}
       <div className="flex flex-col md:flex-row gap-8 mt-8">
-        <main className="flex-grow w-[60vw]">
+        <main className="flex-grow w-[60vw] ">
           {/* What you'll learn Section */}
-          <Card className="mb-8">
+          <Card className="mb-8 min-h-[600px]">
             <CardHeader>
               <CardTitle>What you'll learn</CardTitle>
             </CardHeader>
@@ -86,15 +94,15 @@ function StudentViewCourseDetailsPage() {
         </main>
 
         {/* Sidebar with Video Player and Pricing */}
-        <aside className="w-[40vw]">
-          <Card className="sticky top-4">
+        <aside className="w-[40vw] ">
+          <Card className=" h-[600px]">
             <CardContent className="p-6">
               <div className="aspect-video mb-4 rounded-lg flex items-center justify-center">
                 {/* <VideoPlayer url="video-url" width="450px" height="200px" /> */}
                 <img
                   src={courseDetailsData?.banner}
                   alt="course"
-                  className="w-[450px] h-[450px] object-cover rounded-lg"
+                  className="w-[450px] h-[450px] object-contain rounded-lg "
                 />
               </div>
               <div className="mb-4">

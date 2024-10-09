@@ -1,3 +1,5 @@
+import { AiFillEdit } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -47,7 +49,7 @@ function Courses() {
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
-        <CardTitle className="text-3xl font-extrabold">All Courses</CardTitle>
+        <CardTitle className="text-3xl font-extrabold ">All Courses</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -75,14 +77,14 @@ function Courses() {
                         variant="ghost"
                         size="sm"
                       >
-                        Edit
+                        <AiFillEdit size={20} />
                       </Button>
                       <Button
                         onClick={() => deleteCourse(index)}
                         variant="ghost"
                         size="sm"
                       >
-                        Delete
+                        <MdDelete size={20} />
                       </Button>
                     </TableCell>
                   </TableRow>

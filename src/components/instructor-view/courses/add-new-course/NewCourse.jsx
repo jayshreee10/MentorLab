@@ -6,6 +6,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CourseLanding from "./CourseDetails";
 import CourseCurriculum from "./CourseLectures";
+import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 
 export default function NewCourse() {
   const [activeTab, setActiveTab] = useState("Lectures");
@@ -47,6 +48,19 @@ export default function NewCourse() {
 
   return (
     <main className="h-[100vh] flex-1 p-8 overflow-y-auto bg-gray-100">
+      <header className="w-full mx-auto flex items-center gap-10 pb-10">
+        <Button
+          variant="outline"
+          onClick={() => navigate("/instructor")}
+          className="gap-2 bg-gray-100 hover:bg-gray-800 hover:text-white"
+        >
+          <HiOutlineArrowNarrowLeft size={20} /> Go Back
+        </Button>
+        <div className="text-4xl font-bold">
+          {courseId !== null ? "Update Course" : "Create Course"}
+        </div>
+      </header>
+
       <div className="max-w-7xl mx-auto flex flex-col gap-5">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>

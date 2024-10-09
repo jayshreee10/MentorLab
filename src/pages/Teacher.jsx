@@ -15,17 +15,17 @@ export default function Teacher() {
   const { initialNewCourse } = useInstructorContext();
   const navigate = useNavigate();
   const menuItems = [
-    {
-      icon: BarChart,
-      label: "Dashboard",
-      value: "dashboard",
-      component: <InstructorDashboard />,
-    },
+    // {
+    //   icon: BarChart,
+    //   label: "Dashboard",
+    //   value: "dashboard",
+    //   component: <InstructorDashboard />,
+    // },
 
     {
       icon: Book,
-      label: "Courses",
-      value: "courses",
+      label: "Dashboard",
+      value: "dashboard",
       component: <InstructorCourses />,
     },
     {
