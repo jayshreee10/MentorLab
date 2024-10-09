@@ -7,7 +7,7 @@
 <h1 align="center">Mentor Lab</h1>
 
 <div align="center">
-  <strong>Creating a buzz around the latest beta products</strong>
+  <strong>Learn, Grow, and Achieve with Expert-Led Courses.</strong>
 </div>
 
 <br />
