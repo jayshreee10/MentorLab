@@ -33,12 +33,12 @@ function FirebaseProvider({ children }) {
 
   // Firebase configuration from .env
   const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    apiKey: "AIzaSyBNvT5L0u7Y7yB8Xh0vSQuV5li_OTGWhT0",
+    authDomain: "mentorlab-9db1b.firebaseapp.com",
+    projectId: "mentorlab-9db1b",
+    storageBucket: "mentorlab-9db1b.appspot.com",
+    messagingSenderId: "375961028209",
+    appId: "1:375961028209:web:cb6e226eea62cd2c15bdd0",
   };
 
   const app = initializeApp(firebaseConfig);
