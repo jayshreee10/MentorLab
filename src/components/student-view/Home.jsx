@@ -2,7 +2,7 @@ import { courseCategories } from "@/config";
 import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../../../public/Girl.png";
+import logo from "../../assets/Girl.png";
 import { useFirebaseContext } from "../../context/firebase-context/index";
 import { Button } from "../ui/button";
 

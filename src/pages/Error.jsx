@@ -1,5 +1,5 @@
 import React from "react";
-import error from "../../public/404.png";
+import error from "../assets/404.png";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 

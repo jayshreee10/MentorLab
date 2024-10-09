@@ -1,6 +1,6 @@
 import CommonForm from "@/components/common-form";
 import { Button } from "@/components/ui/button";
-import logo from "../../public/Girl.png";
+import logo from "../assets/Girl.png";
 import {
   Card,
   CardContent,
