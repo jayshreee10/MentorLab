@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/iamsahebgiri/betabuzz">
+  <a href="">
     <img alt="MentorLab Logo" height="80" src="https://github.com/user-attachments/assets/8e22fe9c-9c46-487e-a3a2-37563a9ddbdf">
   </a>
 </p>
