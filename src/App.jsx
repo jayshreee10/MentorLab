@@ -7,7 +7,7 @@ import OpenCourse from "./components/student-view/OpenCourse";
 import Hero from "./pages/Hero";
 import Student from "./pages/Student";
 import Instructor from "./pages/Teacher";
-import Test from "./pages/Test";
+import Error from "./pages/Error";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
             element={<NewStudentCourseProgressPage />}
           />
         </Route>
-        <Route path="/Test" element={<Test />} />
+        <Route path="/*" element={<Error />} />
       </Routes>
     </>
   );

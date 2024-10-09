@@ -104,7 +104,7 @@ function AuthPageUI() {
                 }}
               >
                 <GrGoogle />
-                <div className="pl-2">Sign in with Google</div>
+                <div className="pl-2 font-medium">Sign in with Google</div>
               </Button>
             </CardContent>
           </Card>
@@ -145,7 +145,7 @@ function AuthPageUI() {
                 }}
               >
                 <GrGoogle />
-                <div className="pl-2">Sign up with Google</div>
+                <div className="pl-2 font-medium">Sign up with Google</div>
               </Button>
             </CardContent>
           </Card>
