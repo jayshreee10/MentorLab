@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm i && npm run build
+      - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MENTORLAB }}
-          projectId: mentorlab
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MENTORLAB_9DB1B }}
+          projectId: mentorlab-9db1b
