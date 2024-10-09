@@ -36,11 +36,11 @@ function NewStudentCourseProgressPage() {
   }, [courseId]);
 
   return (
-    <div className="flex flex-col  bg-[#1c1d1f] text-white">
+    <div className="flex flex-col mt-[70px] bg-[#1c1d1f] text-white">
       <div className="flex items-center justify-between p-4 bg-[#1c1d1f] border-b border-gray-700">
         <div className="flex items-center space-x-4">
           <Button
-            onClick={() => navigate("/student")}
+            onClick={() => navigate("/student/course-details?id=" + courseId)}
             className="text-white"
             variant="ghost"
             size="sm"
@@ -106,9 +106,9 @@ function NewStudentCourseProgressPage() {
             }
           </div>
         </div>
-
+        {/* SideBar */}
         <div
-          className={`fixed top-[150px] right-0 bottom-0 w-[400px] bg-[#1c1d1f] border-l border-gray-700 transition-all duration-300 ${
+          className={`fixed top-[70px] right-0 bottom-0 w-[400px] bg-[#1c1d1f] border-l border-gray-700 transition-all duration-300 ${
             isSideBarOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >

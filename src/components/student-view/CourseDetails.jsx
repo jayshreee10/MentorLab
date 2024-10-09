@@ -26,7 +26,7 @@ function StudentViewCourseDetailsPage() {
   const studentViewCourseDetails = {
     title: "Course Title",
     subtitle: "Course Subtitle",
-    instructorName: "Hemant Joshi",
+    instructorName: "Jayshree",
     date: "2023-09-15T12:34:56Z",
     primaryLanguage: "English",
     students: [1, 2, 3],
@@ -46,7 +46,7 @@ function StudentViewCourseDetailsPage() {
       <div className="bg-gray-900 text-white p-8 rounded-t-lg">
         <h1 className="text-3xl font-bold mb-4">{courseDetailsData?.title}</h1>
         <p className="text-xl mb-4">{courseDetailsData?.subtitle}</p>
-        <div className="flex items-center space-x-4 mt-2 text-sm">
+        <div className="flex items-center space-x-4 mt-2 text-sm ">
           <span>Created By {studentViewCourseDetails?.instructorName}</span>
           <span>Created On {studentViewCourseDetails?.date.split("T")[0]}</span>
           <span className="flex items-center">
@@ -64,7 +64,7 @@ function StudentViewCourseDetailsPage() {
 
       {/* Main Content and Sidebar */}
       <div className="flex flex-col md:flex-row gap-8 mt-8">
-        <main className="flex-grow">
+        <main className="flex-grow w-[60vw]">
           {/* What you'll learn Section */}
           <Card className="mb-8">
             <CardHeader>
@@ -83,40 +83,10 @@ function StudentViewCourseDetailsPage() {
               </ul>
             </CardContent>
           </Card>
-
-          {/* Course Description Section */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Course Description</CardTitle>
-            </CardHeader>
-            <CardContent>{courseDetailsData?.description}</CardContent>
-          </Card>
-
-          {/* Course Curriculum Section */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Course Curriculum</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {courseLectures?.map((curriculumItem, index) => (
-                <li
-                  className={`${
-                    curriculumItem?.freePreview
-                      ? "cursor-pointer"
-                      : "cursor-not-allowed"
-                  } flex items-center mb-4`}
-                  key={index}
-                >
-                  <PlayCircle className="mr-2 h-4 w-4" />
-                  <span>{curriculumItem?.title}</span>
-                </li>
-              ))}
-            </CardContent>
-          </Card>
         </main>
 
         {/* Sidebar with Video Player and Pricing */}
-        <aside className="w-full md:w-[500px]">
+        <aside className="w-[40vw]">
           <Card className="sticky top-4">
             <CardContent className="p-6">
               <div className="aspect-video mb-4 rounded-lg flex items-center justify-center">
@@ -136,6 +106,37 @@ function StudentViewCourseDetailsPage() {
             </CardContent>
           </Card>
         </aside>
+      </div>
+      <div className="w-full">
+        {/* Course Description Section */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Course Description</CardTitle>
+          </CardHeader>
+          <CardContent>{courseDetailsData?.description}</CardContent>
+        </Card>
+
+        {/* Course Curriculum Section */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Course Curriculum</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {courseLectures?.map((curriculumItem, index) => (
+              <li
+                className={`${
+                  curriculumItem?.freePreview
+                    ? "cursor-pointer"
+                    : "cursor-not-allowed"
+                } flex items-center mb-4`}
+                key={index}
+              >
+                <PlayCircle className="mr-2 h-4 w-4" />
+                <span>{curriculumItem?.title}</span>
+              </li>
+            ))}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

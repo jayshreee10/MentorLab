@@ -27,7 +27,7 @@ export default function OpenCourse() {
   ];
 
   return (
-    <main className="flex-1 p-8 overflow-y-auto bg-gray-100">
+    <main className="flex-1 mt-[60px] p-8 overflow-y-auto bg-gray-100">
       <div className="max-w-7xl mx-auto">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList>

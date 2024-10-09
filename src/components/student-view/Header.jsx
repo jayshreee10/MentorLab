@@ -9,7 +9,7 @@ function Header() {
   const [openModal, setOpenModal] = useState(false);
   return (
     <div>
-      <header className="flex items-center justify-between p-4 border-b relative">
+      <header className="fixed bg-white w-full top-0 flex items-center justify-between p-4 border-b mb-[50px] ">
         <div className="flex items-center space-x-4">
           <Link to="/student" className="flex items-center hover:text-black">
             {/* <GraduationCap className="h-8 w-8 mr-4" /> */}

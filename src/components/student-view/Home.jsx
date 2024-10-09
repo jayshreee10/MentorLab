@@ -77,7 +77,7 @@ function StudentHomePage() {
                 />
                 <div className="p-4">
                   <h3 className="font-bold mb-2">{course.title}</h3>
-                  <p className="text-sm text-gray-700 mb-2">Hemant Joshi</p>
+                  <p className="text-sm text-gray-700 mb-2">Jayshree</p>
                   <p className="font-bold text-[16px]">Free</p>
                 </div>
               </div>
