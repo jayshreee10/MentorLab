@@ -2,7 +2,7 @@ import { courseCategories } from "@/config";
 import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Ad from "../../../public/Ad.png";
+import logo from "../../../public/Girl.png";
 import { useFirebaseContext } from "../../context/firebase-context/index";
 import { Button } from "../ui/button";
 
@@ -17,18 +17,25 @@ function StudentHomePage() {
     getAllCourses().then((courses) => setCourses(courses));
   }, []);
   return (
-    <div className="h-screen w-screen bg-white">
+    <div className="h-screen w-screen bg-white ">
       {/* Ad Section */}
-      <section className="h-full w-full flex flex-col bg-orange-100 lg:flex-row items-center justify-evenly p-8">
-        <div className="w-full">
-          <h1 className="text-4xl font-bold mb-4">Learning that gets you</h1>
-          <p className="text-xl">
-            Skills for your present and your future. Get Started with Us
-          </p>
+      <section className="h-full w-full flex flex-col bg-orange-100  items-center justify-center gap-10  p-8">
+        <img src={logo} alt="logo" className="size-[400px]" />
+        <div className="flex flex-col justify-center-center items-center gap-6 text-center w-full">
+          <h1 className="text-6xl font-bold ">Welcome to Mentor Lab</h1>
+          <h3 className="text-lg font-semibold tracking-wider ">
+            Learn, Grow, and Achieve with Expert-Led Courses.
+          </h3>
+          <div className="w-[200px]">
+            <Button onClick={() => navigate("/student/courses")}>
+              Start Learning {"->"}{" "}
+            </Button>
+          </div>
         </div>
-        <div className="lg:w-full mb-8 lg:mb-0">
+
+        {/* <div className="lg:w-full mb-8 lg:mb-0">
           <img src={Ad} className="size-[800px] rounded-lg shadow-lg" />
-        </div>
+        </div> */}
       </section>
 
       {/* Course Categories Section */}

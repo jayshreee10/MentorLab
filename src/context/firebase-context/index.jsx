@@ -132,6 +132,7 @@ function FirebaseProvider({ children }) {
     try {
       await signOut(auth);
       console.log("Signed out successfully");
+      navigate("/");
     } catch (error) {
       console.error(error);
       alert("Failed to log out, Please try again");
@@ -157,7 +158,6 @@ function FirebaseProvider({ children }) {
   // Helper function to get course document
   async function getCourseDoc(course) {
     const coursePoint = getCoursePath(course);
-    console.log(coursePoint);
     return await getDoc(coursePoint);
   }
 

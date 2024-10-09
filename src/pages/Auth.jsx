@@ -1,5 +1,6 @@
 import CommonForm from "@/components/common-form";
 import { Button } from "@/components/ui/button";
+import logo from "../../public/Girl.png";
 import {
   Card,
   CardContent,
@@ -56,9 +57,10 @@ function AuthPageUI() {
 
   return (
     <div className="flex flex-col items-center justify-center bg-white rounded-lg p-10 shadow-lg">
-      <header className="px-4 lg:px-6 h-14 flex items-center justify-center  gap-4">
-        <FaUserGraduate size={20} />
-        <h1 className="text-xl font-bold">Mentor Lab</h1>
+      <header className="px-4 lg:px-6 h-14 flex items-baseline justify-center  pb-5 gap-4">
+        {/* <FaUserGraduate size={20} /> */}
+        <img src={logo} alt="" srcset="" className="size-[40px]" />
+        <p className="text-4xl font-bold">Mentor Lab</p>
       </header>
       <Tabs
         value={activeTab}
@@ -114,7 +116,8 @@ function AuthPageUI() {
             <CardHeader>
               <CardTitle>Create a new account</CardTitle>
               <CardDescription>
-                Enter your details to get started
+                <p className="py-2">Enter your details to get started</p>
+                <p>Select a Role to Signup with Google</p>
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -144,9 +147,6 @@ function AuthPageUI() {
                 <GrGoogle />
                 <div className="pl-2">Sign up with Google</div>
               </Button>
-              <div className="w-full text-center text-xs text-black font-medium">
-                Select Role to Signup with Google
-              </div>
             </CardContent>
           </Card>
         </TabsContent>

@@ -8,7 +8,6 @@ function Student() {
       <Header />
       {/* The Home component can be included if you want it always visible */}
       <Outlet />
-
       {/* Render nested routes here */}
     </div>
   );

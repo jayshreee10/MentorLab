@@ -147,8 +147,7 @@ function SelectCourses() {
                         {courseItem.title}
                       </CardTitle>
                       <p className="text-sm text-gray-600 mb-1">
-                        Created By{" "}
-                        <span className="font-bold"> Instructor</span>
+                        Created By <span className="font-bold"> Jayshree</span>
                       </p>
                       <p className="text-[16px] text-gray-600 mt-3 mb-2">
                         {courseItem.curriculum.length}{" "}
