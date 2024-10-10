@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/Girl.png";
 import { useFirebaseContext } from "../../context/firebase-context/index";
 import { Button } from "../ui/button";
+import banner from "../../assets/five.jpg";
 
 function StudentHomePage() {
   const navigate = useNavigate();
@@ -19,23 +20,77 @@ function StudentHomePage() {
   return (
     <div className="h-screen w-screen bg-white ">
       {/* Ad Section */}
-      <section className="h-full w-full flex flex-col bg-orange-100  items-center justify-center gap-10  p-8">
-        <img src={logo} alt="logo" className="size-[400px]" />
-        <div className="flex flex-col justify-center-center items-center gap-6 text-center w-full">
-          <h1 className="text-6xl font-bold ">Welcome to Mentor Lab</h1>
-          <h3 className="text-lg font-semibold tracking-wider ">
+      <section className="mt-[70px] h-full w-full flex flex-col bg-white items-center justify-center gap-10 p-8 relative overflow-hidden">
+        {/* Background Banner */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={banner}
+            alt="Mentor Lab Banner"
+            className="w-full h-full object-cover opacity-60"
+          />
+        </div>
+
+        <div className="z-10 flex flex-col justify-center items-center gap-6 text-center w-full">
+          {/* <img
+            src={logo}
+            alt="logo"
+            className="w-[200px] h-auto animate-fade-in"
+          /> */}
+          <h1 className="text-6xl font-bold text-black animate-fade-in backdrop-blur-sm">
+            Welcome to Mentor Lab
+          </h1>
+          <h3 className="text-lg bg-black bg-opacity-60 px-10 py-5 rounded-[100px] font-semibold tracking-wider text-white animate-fade-in">
             Learn, Grow, and Achieve with Expert-Led Courses.
           </h3>
           <div className="w-[200px]">
-            <Button onClick={() => navigate("/student/courses")}>
-              Start Learning {"->"}{" "}
+            <Button
+              onClick={() => navigate("/student/courses")}
+              className="bg-black text-white  transition duration-300 ease-in-out"
+            >
+              Start Learning {"->"}
             </Button>
           </div>
         </div>
 
-        {/* <div className="lg:w-full mb-8 lg:mb-0">
-          <img src={Ad} className="size-[800px] rounded-lg shadow-lg" />
-        </div> */}
+        {/* Unique Features Section */}
+        <div className="flex flex-col items-center gap-8 mt-10 z-10">
+          <h2 className="text-4xl font-bold text-black backdrop-blur-sm text-center">
+            Why Choose Mentor Lab?
+          </h2>
+          <div className="flex flex-wrap justify-center gap-8 mt-4">
+            {/* Feature 1 */}
+            <div className="bg-black bg-opacity-80 p-6 rounded-lg shadow-md w-64 h-64 transform transition-transform duration-300 hover:scale-105 animate-fade-in flex flex-col items-center justify-center">
+              <h4 className="text-xl font-bold text-white">
+                Expert Mentorship
+              </h4>
+              <p className="text-gray-300 text-center">
+                Connect with industry leaders and gain insights into real-world
+                scenarios.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="bg-black bg-opacity-80 p-6 rounded-lg shadow-md w-64 h-64 transform transition-transform duration-300 hover:scale-105 animate-fade-in flex flex-col items-center justify-center">
+              <h4 className="text-xl font-bold text-white">
+                Interactive Learning
+              </h4>
+              <p className="text-gray-300 text-center">
+                Engage in hands-on projects and discussions to enhance your
+                skills.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="bg-black bg-opacity-80 p-6 rounded-lg shadow-md w-64 h-64 transform transition-transform duration-300 hover:scale-105 animate-fade-in flex flex-col items-center justify-center">
+              <h4 className="text-xl font-bold text-white">
+                Flexible Schedule
+              </h4>
+              <p className="text-gray-300 text-center">
+                Learn at your own pace, with courses available 24/7.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Course Categories Section */}
@@ -92,3 +147,13 @@ function StudentHomePage() {
 }
 
 export default StudentHomePage;
+
+{
+  /* <Button
+className="justify-start"
+variant="outline"
+key={categoryItem.id}
+>
+{categoryItem.label}
+</Button> */
+}
