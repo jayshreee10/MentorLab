@@ -120,7 +120,6 @@ MentorLab leverages several powerful libraries and frameworks:
 Planned features and improvements:
 
 - [ ] Integration with Google and GitHub for seamless login.
-- [ ] AI-based product description generator for enhancing course content.
 
 Stay tuned for more exciting updates!
 
