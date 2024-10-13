@@ -101,7 +101,9 @@ function FirebaseProvider({ children }) {
         email,
         password
       );
+      // console.log(userCredential);
       const user = userCredential.user;
+      // console.log(user);
       console.log("Signed up successfully with email and password");
       await createUserData(user, name, role);
     } catch (error) {
@@ -164,7 +166,7 @@ function FirebaseProvider({ children }) {
   //get course from id
   async function getCourseDocFromId(courseId) {
     const coursePoint = doc(database, dbPaths.courses, courseId);
-    return await getDoc(coursePoint);
+    return await getDoc(coursePoint); //firebase func
   }
 
   // Function to get all courses

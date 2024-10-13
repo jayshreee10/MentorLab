@@ -4,8 +4,8 @@ import { InstructorContext } from "@/context/instructor-context";
 import { Text, Youtube } from "lucide-react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CourseLanding from "./CourseDetails";
-import CourseCurriculum from "./CourseLectures";
+import CourseDetails from "./CourseDetails";
+import CourseLectures from "./CourseLectures";
 import { HiOutlineArrowNarrowLeft } from "react-icons/hi";
 
 export default function NewCourse() {
@@ -30,7 +30,7 @@ export default function NewCourse() {
       value: "Lectures",
       component: (
         <div>
-          <CourseCurriculum />
+          <CourseLectures />
         </div>
       ), // Dashboard component
     },
@@ -40,7 +40,7 @@ export default function NewCourse() {
       value: "Details",
       component: (
         <div>
-          <CourseLanding />
+          <CourseDetails />
         </div>
       ), // Courses component
     },

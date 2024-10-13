@@ -1,6 +1,5 @@
 import CommonForm from "@/components/common-form";
 import { Button } from "@/components/ui/button";
-import logo from "../assets/Girl.png";
 import {
   Card,
   CardContent,
@@ -9,21 +8,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import logo from "../assets/Girl.png";
 import { signInFormControls, signUpFormControls } from "@/config"; // Ensure this import path is correct
 import { AuthContext } from "@/context/auth-context"; // Ensure this path is correct
 import { useFirebaseContext } from "@/context/firebase-context";
 import { useContext } from "react";
-import { FaUserGraduate } from "react-icons/fa6";
 import { GrGoogle } from "react-icons/gr";
 
 function AuthPageUI() {
-  const {
-    signUpWithGoogle,
-    signInWithGoogle,
-    signUpWithEmailPassword,
-    signInWithEmailPassword,
-  } = useFirebaseContext();
-  // Access context values directly
   const {
     activeTab,
     setActiveTab,
@@ -33,32 +25,69 @@ function AuthPageUI() {
     setSignUpFormData,
   } = useContext(AuthContext);
 
+  const {
+    signUpWithGoogle,
+    signInWithGoogle,
+    signUpWithEmailPassword,
+    signInWithEmailPassword,
+  } = useFirebaseContext();
+  // Access context values directly
+
   function handleTabChange(value) {
     setActiveTab(value);
   }
 
+  // Validation for Sign-In Form
   function checkIfSignInFormIsValid() {
-    return (
+    if (
       signInFormData &&
-      signInFormData.userEmail !== "" &&
-      signInFormData.password !== ""
-    );
+      typeof signInFormData.userEmail === "string" &&
+      typeof signInFormData.password === "string" &&
+      signInFormData.userEmail.trim() !== "" &&
+      signInFormData.password.trim() !== ""
+    ) {
+      if (!validateEmail(signInFormData.userEmail)) {
+        alert("Email is not valid!"); // Show alert if email is not valid
+        return false;
+      }
+      return true;
+    } else {
+      return false; // Return false if other conditions are not met
+    }
   }
 
+  // Validation for Sign-Up Form
   function checkIfSignUpFormIsValid() {
-    return (
+    if (
       signUpFormData &&
-      signUpFormData.userName !== "" &&
-      signUpFormData.userEmail !== "" &&
-      signUpFormData.password !== "" &&
-      signUpFormData.role !== ""
-    );
+      typeof signUpFormData.userName === "string" &&
+      typeof signUpFormData.userEmail === "string" &&
+      typeof signUpFormData.password === "string" &&
+      typeof signUpFormData.role === "string" &&
+      signUpFormData.userName.trim() !== "" &&
+      signUpFormData.userEmail.trim() !== "" &&
+      signUpFormData.password.trim() !== "" &&
+      signUpFormData.role.trim() !== ""
+    ) {
+      if (!validateEmail(signUpFormData.userEmail)) {
+        alert("Email is not valid!");
+        return false;
+      }
+      return true;
+    } else {
+      return false; // Return false if other conditions are not met
+    }
+  }
+
+  // Email validation utility function
+  function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 
   return (
     <div className="flex flex-col items-center justify-center bg-white rounded-lg p-10 shadow-lg">
       <header className="px-4 lg:px-6 h-14 flex items-baseline justify-center  pb-5 gap-4">
-        {/* <FaUserGraduate size={20} /> */}
         <img src={logo} alt="" srcset="" className="size-[40px]" />
         <p className="text-4xl font-bold">Mentor Lab</p>
       </header>
