@@ -23,10 +23,10 @@ function LectureForm({ index, initialLecturesControls, canEdit }) {
     googleForm: "",
   });
   const [isFormValid, setIsFormValid] = useState(false);
-
-  const { uploadFile } = useFirebaseContext();
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const { uploadFile } = useFirebaseContext();
 
   const [fileData, setFileData] = useState({
     url: initialLecturesControls.fileData.url || "",

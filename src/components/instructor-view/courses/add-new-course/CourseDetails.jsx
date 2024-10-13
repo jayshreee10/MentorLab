@@ -10,6 +10,7 @@ import { MdDeleteOutline } from "react-icons/md";
 function CourseDetails() {
   const { courseDetailsData, setCourseDetailsData } =
     useContext(InstructorContext);
+
   const [url, setUrl] = useState(courseDetailsData.banner);
 
   const { uploadFile } = useFirebaseContext();

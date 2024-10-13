@@ -51,6 +51,7 @@ export default function InstructorProvider({ children }) {
     setCourseLectures(course.curriculum);
     setCurrentlyEditedLectureIndex(null);
   }
+
   function initialNewCourse() {
     setCourseDetailsData(courseLandingInitialFormData);
     setCourseLectures([]);

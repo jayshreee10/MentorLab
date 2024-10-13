@@ -211,7 +211,7 @@ function FirebaseProvider({ children }) {
     try {
       const courseDoc = await getCourseDoc(course);
       if (courseDoc.exists()) {
-        alert("Course already exists, Please sign in.");
+        alert("Course already exists.");
       } else {
         console.log("Course does not exist, creating new course...");
         await setDoc(getCoursePath(course), course);

@@ -28,8 +28,8 @@ function Courses() {
   }, []);
 
   function editCourse(index) {
-    navigate("/instructor/edit-course");
     initialCourse(courses[index]);
+    navigate("/instructor/edit-course");
   }
 
   function deleteCourse(index) {
