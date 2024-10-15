@@ -8,12 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import logo from "../assets/Girl.png";
 import { signInFormControls, signUpFormControls } from "@/config"; // Ensure this import path is correct
 import { AuthContext } from "@/context/auth-context"; // Ensure this path is correct
 import { useFirebaseContext } from "@/context/firebase-context";
 import { useContext } from "react";
 import { GrGoogle } from "react-icons/gr";
+import logo from "../assets/Girl.png";
 
 function AuthPageUI() {
   const {
@@ -47,7 +47,7 @@ function AuthPageUI() {
       signInFormData.password.trim() !== ""
     ) {
       if (!validateEmail(signInFormData.userEmail)) {
-        alert("Email is not valid!"); // Show alert if email is not valid
+        // alert("Email is not valid!"); // Show alert if email is not valid
         return false;
       }
       return true;
@@ -70,7 +70,7 @@ function AuthPageUI() {
       signUpFormData.role.trim() !== ""
     ) {
       if (!validateEmail(signUpFormData.userEmail)) {
-        alert("Email is not valid!");
+        // alert("Email is not valid!");
         return false;
       }
       return true;
@@ -88,7 +88,7 @@ function AuthPageUI() {
   return (
     <div className="flex flex-col items-center justify-center bg-white rounded-lg p-10 shadow-lg">
       <header className="px-4 lg:px-6 h-14 flex items-baseline justify-center  pb-5 gap-4">
-        <img src={logo} alt="" srcset="" className="size-[40px]" />
+        <img src={logo} alt="" srcSet="" className="size-[40px]" />
         <p className="text-4xl font-bold">Mentor Lab</p>
       </header>
       <Tabs
