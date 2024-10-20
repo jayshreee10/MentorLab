@@ -1,14 +1,13 @@
 import CommonForm from "@/components/common-form";
 import { Button } from "@/components/ui/button";
 import { lecturesControls } from "@/config";
-import { useFirebaseContext } from "@/context/firebase-context";
+import { useApiContext } from "@/context/firebase-context";
 import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
-import { FaImage } from "react-icons/fa";
-import { MdDeleteOutline } from "react-icons/md";
-import { IoDocumentTextOutline } from "react-icons/io5";
 import { BsFiletypePpt } from "react-icons/bs";
-import { FaRegFilePdf } from "react-icons/fa";
+import { FaImage, FaRegFilePdf } from "react-icons/fa";
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { MdDeleteOutline } from "react-icons/md";
 
 function LectureForm({ index, initialLecturesControls, canEdit }) {
   const [lectureData, setLectureData] = useState(initialLecturesControls);
@@ -26,7 +25,7 @@ function LectureForm({ index, initialLecturesControls, canEdit }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { uploadFile } = useFirebaseContext();
+  const { uploadFile } = useApiContext();
 
   const [fileData, setFileData] = useState({
     url: initialLecturesControls.fileData.url || "",

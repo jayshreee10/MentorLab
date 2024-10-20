@@ -3,12 +3,12 @@ import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import banner from "../../assets/five.jpg";
-import { useFirebaseContext } from "../../context/firebase-context/index";
+import { useApiContext } from "../../context/firebase-context/index";
 import { Button } from "../ui/button";
 
 function StudentHomePage() {
   const navigate = useNavigate();
-  const { getAllCourses, deleteCourseData } = useFirebaseContext();
+  const { getAllCourses, deleteCourseData } = useApiContext();
   const { initialCourse } = useInstructorContext();
 
   const [courses, setCourses] = useState([]);

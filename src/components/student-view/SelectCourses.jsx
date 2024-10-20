@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
-import { useFirebaseContext } from "@/context/firebase-context";
+import { useApiContext } from "@/context/firebase-context";
 import { useInstructorContext } from "@/context/instructor-context";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -35,7 +35,7 @@ function SelectCourses() {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
   const navigate = useNavigate();
-  const { getAllCourses } = useFirebaseContext();
+  const { getAllCourses } = useApiContext();
   const { initialCourse } = useInstructorContext();
 
   const [courses, setCourses] = useState([]);

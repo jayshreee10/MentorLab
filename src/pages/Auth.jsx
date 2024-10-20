@@ -10,7 +10,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { signInFormControls, signUpFormControls } from "@/config"; // Ensure this import path is correct
 import { AuthContext } from "@/context/auth-context"; // Ensure this path is correct
-import { useFirebaseContext } from "@/context/firebase-context";
+import { useApiContext } from "@/context/firebase-context";
 import { useContext } from "react";
 import { GrGoogle } from "react-icons/gr";
 import logo from "../assets/Girl.png";
@@ -30,7 +30,7 @@ function AuthPageUI() {
     signInWithGoogle,
     signUpWithEmailPassword,
     signInWithEmailPassword,
-  } = useFirebaseContext();
+  } = useApiContext();
   // Access context values directly
 
   function handleTabChange(value) {

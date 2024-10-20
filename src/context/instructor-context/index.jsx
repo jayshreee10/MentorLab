@@ -4,7 +4,7 @@ import {
 } from "@/config";
 import { createContext, useContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useFirebaseContext } from "../firebase-context";
+import { useApiContext } from "../firebase-context";
 
 export const InstructorContext = createContext(null);
 
@@ -23,8 +23,7 @@ export default function InstructorProvider({ children }) {
 
   const [courseId, setCourseId] = useState(null);
 
-  const { createCourseData, updateCourseData, getCourseData } =
-    useFirebaseContext();
+  const { createCourseData, updateCourseData, getCourseData } = useApiContext();
 
   function fetchCourseDataAndInitial(courseId) {
     //fetch course data and initial

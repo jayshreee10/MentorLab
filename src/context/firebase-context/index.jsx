@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 import { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -9,13 +8,13 @@ import { LocalStorageService } from "@/config/service";
 import axios from "axios";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
-const FireBaseContext = createContext();
+const ApiContext = createContext();
 
-export const useFirebaseContext = () => {
-  return useContext(FireBaseContext);
+export const useApiContext = () => {
+  return useContext(ApiContext);
 };
 
-function FirebaseProvider({ children }) {
+function ApiProvider({ children }) {
   const navigate = useNavigate();
 
   const BASE_URL = "http://localhost:3001";
@@ -26,7 +25,7 @@ function FirebaseProvider({ children }) {
     courses: `${BASE_URL}/api/courses`,
   };
 
-  // Firebase configuration from .env
+  // Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyBNvT5L0u7Y7yB8Xh0vSQuV5li_OTGWhT0",
     authDomain: "mentorlab-9db1b.firebaseapp.com",
@@ -38,13 +37,8 @@ function FirebaseProvider({ children }) {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const database = getFirestore(app);
   const storage = getStorage(app);
   const googleProvider = new GoogleAuthProvider();
-  const dbPaths = {
-    users: "users",
-    courses: "courses",
-  };
 
   //to upload files to firebase storage, input: file, output: url
   async function uploadFile(file) {
@@ -108,20 +102,6 @@ function FirebaseProvider({ children }) {
       alert("Failed to sign in with Email and Password, Please try again");
     }
   };
-
-  // Logout from Firebase
-  const fireBaseLogout = async () => {
-    //remove token from local storage
-    LocalStorageService.removeToken();
-    navigate("/");
-  };
-
-  //get course from id
-  async function getCourseDocFromId(courseId) {
-    const coursePoint = doc(database, dbPaths.courses, courseId);
-    return await getDoc(coursePoint); //firebase func
-  }
-
   async function signUp(userName, email, password, role, authType) {
     const appUser = {
       email: email,
@@ -179,6 +159,18 @@ function FirebaseProvider({ children }) {
       );
     }
   }
+  // Navigate to dashboard based on role
+  async function navigateToDashboard(user) {
+    if (user.role === "student") navigate("/student");
+    else if (user.role === "teacher") navigate("/instructor");
+  }
+
+  // Logout from
+  const Logout = async () => {
+    //remove token from local storage
+    LocalStorageService.removeToken();
+    navigate("/");
+  };
 
   // Function to get all courses
   async function getAllCourses() {
@@ -196,6 +188,23 @@ function FirebaseProvider({ children }) {
     } catch (error) {
       console.error("Error fetching courses:", error);
       alert("Failed to fetch courses, Please try again");
+    }
+  }
+  async function getCourseData(courseId) {
+    try {
+      const token = LocalStorageService.getToken();
+      const result = await axios.get(`${endpoints.courses}/${courseId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (result.status === 200) {
+        return result.data;
+      }
+    } catch (error) {
+      console.error("Error fetching course:", error);
+      alert("Failed to fetch course, Please try again");
     }
   }
 
@@ -219,7 +228,6 @@ function FirebaseProvider({ children }) {
     }
   }
 
-  //update course data in Firestore
   async function updateCourseData(course) {
     try {
       const token = LocalStorageService.getToken();
@@ -262,37 +270,12 @@ function FirebaseProvider({ children }) {
     }
   }
 
-  async function getCourseData(courseId) {
-    try {
-      const token = LocalStorageService.getToken();
-      const result = await axios.get(`${endpoints.courses}/${courseId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (result.status === 200) {
-        return result.data;
-      }
-    } catch (error) {
-      console.error("Error fetching course:", error);
-      alert("Failed to fetch course, Please try again");
-    }
-  }
-
-  // Navigate to dashboard based on role
-  async function navigateToDashboard(user) {
-    if (user.role === "student") navigate("/student");
-    else if (user.role === "teacher") navigate("/instructor");
-  }
-
-  // Provide Firebase context to children
   const value = {
     app,
     auth,
     googleProvider,
     signUpWithGoogle,
-    fireBaseLogout,
+    Logout,
     signInWithGoogle,
     signUpWithEmailPassword,
     signInWithEmailPassword,
@@ -304,11 +287,7 @@ function FirebaseProvider({ children }) {
     getCourseData,
   };
 
-  return (
-    <FireBaseContext.Provider value={value}>
-      {children}
-    </FireBaseContext.Provider>
-  );
+  return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
 }
 
-export default FirebaseProvider;
+export default ApiProvider;

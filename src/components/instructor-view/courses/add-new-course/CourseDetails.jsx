@@ -2,7 +2,7 @@ import FormControls from "@/components/common-form/form-controls";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { courseDetailsPageFormControls } from "@/config";
-import { useFirebaseContext } from "@/context/firebase-context";
+import { useApiContext } from "@/context/firebase-context";
 import { InstructorContext } from "@/context/instructor-context";
 import { useContext, useState } from "react";
 import { MdDeleteOutline } from "react-icons/md";
@@ -13,7 +13,7 @@ function CourseDetails() {
 
   const [url, setUrl] = useState(courseDetailsData.banner);
 
-  const { uploadFile } = useFirebaseContext();
+  const { uploadFile } = useApiContext();
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 

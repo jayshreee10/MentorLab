@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useFirebaseContext } from "@/context/firebase-context";
+import { useApiContext } from "@/context/firebase-context";
 import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
@@ -18,7 +18,7 @@ import { getRandomNumber } from "../../../config/index";
 
 function Courses() {
   const navigate = useNavigate();
-  const { getAllCourses, deleteCourseData } = useFirebaseContext();
+  const { getAllCourses, deleteCourseData } = useApiContext();
   const { initialCourse } = useInstructorContext();
 
   const [courses, setCourses] = useState([]);
