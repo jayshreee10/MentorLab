@@ -34,10 +34,8 @@ const sortOptions = [
 function SelectCourses() {
   const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
-  const [loadingState, setLoadingState] = useState(true);
-
   const navigate = useNavigate();
-  const { getAllCourses, deleteCourseData } = useFirebaseContext();
+  const { getAllCourses } = useFirebaseContext();
   const { initialCourse } = useInstructorContext();
 
   const [courses, setCourses] = useState([]);

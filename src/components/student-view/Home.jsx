@@ -2,10 +2,9 @@ import { courseCategories } from "@/config";
 import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../../assets/Girl.png";
+import banner from "../../assets/five.jpg";
 import { useFirebaseContext } from "../../context/firebase-context/index";
 import { Button } from "../ui/button";
-import banner from "../../assets/five.jpg";
 
 function StudentHomePage() {
   const navigate = useNavigate();
@@ -121,7 +120,7 @@ function StudentHomePage() {
                 //          navigate("/student/course-lectures?id=" + courseId);
                 onClick={() => {
                   initialCourse(course);
-                  navigate("/student/course-details?id=" + course.id);
+                  navigate("/student/course-details?id=" + course.courseId);
                 }}
               >
                 <img

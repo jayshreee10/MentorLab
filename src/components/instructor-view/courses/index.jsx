@@ -1,5 +1,3 @@
-import { AiFillEdit } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -13,6 +11,8 @@ import {
 import { useFirebaseContext } from "@/context/firebase-context";
 import { useInstructorContext } from "@/context/instructor-context";
 import { useEffect, useState } from "react";
+import { AiFillEdit } from "react-icons/ai";
+import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { getRandomNumber } from "../../../config/index";
 
@@ -34,7 +34,7 @@ function Courses() {
 
   function deleteCourse(index) {
     const course = courses[index];
-    deleteCourseData(course);
+    deleteCourseData(course.courseId);
     const newCourses = [];
 
     courses.forEach((c, i) => {
@@ -65,7 +65,7 @@ function Courses() {
             <TableBody>
               {courses.length > 0 ? (
                 courses.map((course, index) => (
-                  <TableRow key={course.id}>
+                  <TableRow key={course.courseId}>
                     <TableCell className="font-medium">
                       {course.title}
                     </TableCell>

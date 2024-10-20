@@ -1,14 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  getFirestore,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 import { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -124,49 +116,10 @@ function FirebaseProvider({ children }) {
     navigate("/");
   };
 
-  // Helper function to get Firestore user path
-  function getUserPath(user) {
-    return doc(collection(database, dbPaths.users), user.uid);
-  }
-
-  // Helper function to get course path
-  function getCoursePath(course) {
-    return doc(collection(database, dbPaths.courses), course.id);
-  }
-
-  // Helper function to get user document
-  async function getUserDoc(user) {
-    const userPoint = getUserPath(user);
-    return await getDoc(userPoint);
-  }
-
-  // Helper function to get course document
-  async function getCourseDoc(course) {
-    const coursePoint = getCoursePath(course);
-    return await getDoc(coursePoint);
-  }
-
   //get course from id
   async function getCourseDocFromId(courseId) {
     const coursePoint = doc(database, dbPaths.courses, courseId);
     return await getDoc(coursePoint); //firebase func
-  }
-
-  // Function to get all courses
-  async function getAllCourses() {
-    try {
-      const coursesCollection = collection(database, dbPaths.courses);
-      const coursesSnapshot = await getDocs(coursesCollection);
-      const result = coursesSnapshot.docs.map((doc) => doc.data());
-
-      console.log("Courses fetched successfully");
-      console.log(result);
-
-      return result;
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-      alert("Failed to fetch courses, Please try again");
-    }
   }
 
   async function signUp(userName, email, password, role, authType) {
@@ -227,15 +180,38 @@ function FirebaseProvider({ children }) {
     }
   }
 
-  // Create course data in Firestore
+  // Function to get all courses
+  async function getAllCourses() {
+    try {
+      const token = LocalStorageService.getToken();
+      const result = await axios.get(endpoints.courses, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (result.status === 200) {
+        return result.data;
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      alert("Failed to fetch courses, Please try again");
+    }
+  }
+
   async function createCourseData(course) {
     try {
-      const courseDoc = await getCourseDoc(course);
-      if (courseDoc.exists()) {
-        alert("Course already exists.");
-      } else {
-        console.log("Course does not exist, creating new course...");
-        await setDoc(getCoursePath(course), course);
+      const token = LocalStorageService.getToken();
+      console.log(course);
+      const result = await axios.post(endpoints.courses, course, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (result.status === 200) {
+        console.log("Course created successfully");
+        alert("Course created successfully");
       }
     } catch (error) {
       console.error("Error creating course:", error);
@@ -246,12 +222,20 @@ function FirebaseProvider({ children }) {
   //update course data in Firestore
   async function updateCourseData(course) {
     try {
-      const courseDoc = await getCourseDoc(course);
-      if (courseDoc.exists()) {
-        console.log("Course exists, updating course...");
-        await setDoc(getCoursePath(course), course);
-      } else {
-        alert("Course does not exist, Please sign in.");
+      const token = LocalStorageService.getToken();
+      const result = await axios.put(
+        `${endpoints.courses}/${course.courseId}`,
+        course,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (result.status === 200) {
+        console.log("Course updated successfully");
+        alert("Course updated successfully");
       }
     } catch (error) {
       console.error("Error updating course:", error);
@@ -259,17 +243,18 @@ function FirebaseProvider({ children }) {
     }
   }
 
-  // Function to delete course data in Firestore
   async function deleteCourseData(courseId) {
     try {
-      const courseDoc = await getCourseDoc(courseId); // Fetch the course document snapshot
-      console.log(courseDoc);
-      if (courseDoc.exists()) {
-        console.log("Course exists, deleting course...");
-        await deleteDoc(courseDoc.ref); // Use the document reference (courseDoc.ref) for deletion
+      const token = LocalStorageService.getToken();
+      const result = await axios.delete(`${endpoints.courses}/${courseId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (result.status === 200) {
         console.log("Course deleted successfully");
-      } else {
-        alert("Course does not exist, Please sign in.");
+        alert("Course deleted successfully");
       }
     } catch (error) {
       console.error("Error deleting course:", error);
@@ -277,17 +262,17 @@ function FirebaseProvider({ children }) {
     }
   }
 
-  //get course data in Firestore from id
   async function getCourseData(courseId) {
     try {
-      console.log("Fetching course...");
-      console.log(courseId);
-      const courseDoc = await getCourseDocFromId(courseId);
-      if (courseDoc.exists()) {
-        console.log("Course exists, fetching course...");
-        return courseDoc.data();
-      } else {
-        alert("Course does not exist, Please sign in.");
+      const token = LocalStorageService.getToken();
+      const result = await axios.get(`${endpoints.courses}/${courseId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (result.status === 200) {
+        return result.data;
       }
     } catch (error) {
       console.error("Error fetching course:", error);

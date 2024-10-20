@@ -34,7 +34,7 @@ export default function InstructorProvider({ children }) {
   }
 
   function initialCourse(course) {
-    setCourseId(course.id);
+    setCourseId(course.courseId);
     setCourseDetailsData({
       title: course.title,
       category: course.category,
@@ -125,7 +125,7 @@ export default function InstructorProvider({ children }) {
       const courseData = {
         ...courseDetailsData,
         curriculum: courseLectures,
-        id: uuidv4(),
+        courseId: uuidv4(),
       };
       console.log(courseData);
       createCourseData(courseData);
@@ -140,7 +140,7 @@ export default function InstructorProvider({ children }) {
       const courseData = {
         ...courseDetailsData,
         curriculum: courseLectures,
-        id: courseId,
+        courseId: courseId,
       };
       console.log(courseData);
       updateCourseData(courseData);
