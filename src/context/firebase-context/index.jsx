@@ -1,12 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import {
   collection,
   deleteDoc,
@@ -20,6 +13,8 @@ import {
 import { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { LocalStorageService } from "@/config/service";
+import axios from "axios";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 const FireBaseContext = createContext();
@@ -30,6 +25,14 @@ export const useFirebaseContext = () => {
 
 function FirebaseProvider({ children }) {
   const navigate = useNavigate();
+
+  const BASE_URL = "http://localhost:3001";
+
+  const endpoints = {
+    signUp: `${BASE_URL}/api/auth/signup`,
+    signIn: `${BASE_URL}/api/auth/signin`,
+    courses: `${BASE_URL}/api/courses`,
+  };
 
   // Firebase configuration from .env
   const firebaseConfig = {
@@ -71,10 +74,10 @@ function FirebaseProvider({ children }) {
   // Sign up with Google
   const signUpWithGoogle = async (role) => {
     try {
-      const credential = await signInWithPopup(auth, googleProvider);
-      const user = credential.user;
-      console.log("Signed up successfully with Google");
-      await createUserData(user, "", role);
+      //sign in with google
+      const { user } = await signInWithPopup(auth, googleProvider);
+      //sign up from the mentor-lab server
+      await signUp(user.displayName, user.email, user.uid, role, "google");
     } catch (error) {
       console.error(error);
       alert("Failed to sign up with Google, Please try again");
@@ -84,8 +87,10 @@ function FirebaseProvider({ children }) {
   // Sign in with Google
   const signInWithGoogle = async () => {
     try {
-      const credential = await signInWithPopup(auth, googleProvider);
-      await navigateToDashboard(credential.user);
+      //sign in with google
+      const { user } = await signInWithPopup(auth, googleProvider);
+      //sign in from the mentor-lab server
+      await signIn(user.email, user.uid);
     } catch (error) {
       console.error(error);
       alert("Failed to sign in with Google, Please try again");
@@ -95,17 +100,7 @@ function FirebaseProvider({ children }) {
   // Sign up with EmailPassword
   const signUpWithEmailPassword = async (email, password, name, role) => {
     try {
-      console.log("Signing up...");
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // console.log(userCredential);
-      const user = userCredential.user;
-      // console.log(user);
-      console.log("Signed up successfully with email and password");
-      await createUserData(user, name, role);
+      await signUp(name, email, password, role, "email");
     } catch (error) {
       console.error(error);
       alert("Failed to sign up with Email and Password, Please try again");
@@ -115,14 +110,7 @@ function FirebaseProvider({ children }) {
   // Sign in with EmailPassword
   const signInWithEmailPassword = async (email, password) => {
     try {
-      console.log("Signing in...");
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log("Signed in successfully with email and password");
-      await navigateToDashboard(userCredential.user);
+      await signIn(email, password);
     } catch (error) {
       console.error(error);
       alert("Failed to sign in with Email and Password, Please try again");
@@ -131,14 +119,9 @@ function FirebaseProvider({ children }) {
 
   // Logout from Firebase
   const fireBaseLogout = async () => {
-    try {
-      await signOut(auth);
-      console.log("Signed out successfully");
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to log out, Please try again");
-    }
+    //remove token from local storage
+    LocalStorageService.removeToken();
+    navigate("/");
   };
 
   // Helper function to get Firestore user path
@@ -186,23 +169,61 @@ function FirebaseProvider({ children }) {
     }
   }
 
-  // Create user data in Firestore
-  async function createUserData(user, name, role) {
+  async function signUp(userName, email, password, role, authType) {
     const appUser = {
-      email: user.email,
-      name: name || user.displayName,
-      profile_picture: user.photoURL,
-      userId: user.uid,
+      email: email,
+      userName: userName,
+      password: password,
       role: role,
+      authType: authType,
     };
+    try {
+      const result = await axios.post(endpoints.signUp, appUser);
+      console.log(result);
 
-    const userDoc = await getUserDoc(user);
-    if (userDoc.exists()) {
-      alert("User already exists, Please sign in.");
-    } else {
-      console.log("User does not exist, creating new user...");
-      await setDoc(getUserPath(user), appUser);
-      navigateToDashboard(user);
+      if (result.status === 200) {
+        const token = result.data.token;
+        console.log(token);
+        LocalStorageService.setToken(token);
+        navigateToDashboard(appUser);
+      } else {
+        alert(
+          result.data.message || "Unexpected error occurred during sign-up."
+        );
+      }
+    } catch (error) {
+      console.error("Axios error:", error.response);
+      alert(
+        error.response?.data?.message ||
+          "Failed to create user, Please try again."
+      );
+    }
+  }
+
+  async function signIn(email, password) {
+    let appUser = { email: email, password: password };
+
+    try {
+      const result = await axios.post(endpoints.signIn, appUser);
+      if (result.status === 200) {
+        const token = result.data.token;
+        LocalStorageService.setToken(token);
+        console.log(token);
+        appUser = {
+          email: result.data.email,
+          name: result.data.name,
+          role: result.data.role,
+          authType: result.data.authType,
+        };
+        navigateToDashboard(appUser);
+      } else {
+        alert(result.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      alert(
+        error.response?.data?.message || "Failed to sign in, Please try again."
+      );
     }
   }
 
@@ -276,22 +297,8 @@ function FirebaseProvider({ children }) {
 
   // Navigate to dashboard based on role
   async function navigateToDashboard(user) {
-    const userDoc = await getUserDoc(user);
-    if (userDoc.exists()) {
-      const data = userDoc.data();
-      if (data.role === "student") {
-        // Navigate to student dashboard
-        navigate("/student");
-        console.log("Navigating to student dashboard...");
-      } else if (data.role === "teacher") {
-        //instructor
-        navigate("/instructor");
-        // Navigate to teacher dashboard
-        console.log("Navigating to teacher dashboard...");
-      }
-    } else {
-      alert("User does not exist, please sign up.");
-    }
+    if (user.role === "student") navigate("/student");
+    else if (user.role === "teacher") navigate("/instructor");
   }
 
   // Provide Firebase context to children
