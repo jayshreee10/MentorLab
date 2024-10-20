@@ -17,7 +17,7 @@ export const useApiContext = () => {
 function ApiProvider({ children }) {
   const navigate = useNavigate();
 
-  const BASE_URL = "http://localhost:3001";
+  const BASE_URL = "https://mentorlabapi.onrender.com";
 
   const endpoints = {
     signUp: `${BASE_URL}/api/auth/signup`,
