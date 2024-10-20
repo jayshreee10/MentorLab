@@ -111,17 +111,17 @@ function ApiProvider({ children }) {
       authType: authType,
     };
     try {
-      const result = await axios.post(endpoints.signUp, appUser);
-      console.log(result);
-
-      if (result.status === 200) {
-        const token = result.data.token;
-        console.log(token);
+      const response = await axios.post(endpoints.signUp, appUser);
+      if (response.status === 200) {
+        //get token from response
+        const token = response.data.token;
+        //set token in local storage
         LocalStorageService.setToken(token);
+        //navigate to dashboard
         navigateToDashboard(appUser);
       } else {
         alert(
-          result.data.message || "Unexpected error occurred during sign-up."
+          response.data.message || "Unexpected error occurred during sign-up."
         );
       }
     } catch (error) {
@@ -137,20 +137,20 @@ function ApiProvider({ children }) {
     let appUser = { email: email, password: password };
 
     try {
-      const result = await axios.post(endpoints.signIn, appUser);
-      if (result.status === 200) {
-        const token = result.data.token;
+      const response = await axios.post(endpoints.signIn, appUser);
+
+      if (response.status === 200) {
+        const token = response.data.token;
         LocalStorageService.setToken(token);
-        console.log(token);
         appUser = {
-          email: result.data.email,
-          name: result.data.name,
-          role: result.data.role,
-          authType: result.data.authType,
+          email: response.data.email,
+          name: response.data.name,
+          role: response.data.role,
+          authType: response.data.authType,
         };
         navigateToDashboard(appUser);
       } else {
-        alert(result.data.message);
+        alert(response.data.message);
       }
     } catch (error) {
       console.error(error);
@@ -174,16 +174,17 @@ function ApiProvider({ children }) {
 
   // Function to get all courses
   async function getAllCourses() {
+    // return all courses -> [ {}, {}, {} ]
     try {
       const token = LocalStorageService.getToken();
-      const result = await axios.get(endpoints.courses, {
+      const response = await axios.get(endpoints.courses, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (result.status === 200) {
-        return result.data;
+      if (response.status === 200) {
+        return response.data;
       }
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -193,14 +194,14 @@ function ApiProvider({ children }) {
   async function getCourseData(courseId) {
     try {
       const token = LocalStorageService.getToken();
-      const result = await axios.get(`${endpoints.courses}/${courseId}`, {
+      const response = await axios.get(`${endpoints.courses}/${courseId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (result.status === 200) {
-        return result.data;
+      if (response.status === 200) {
+        return response.data;
       }
     } catch (error) {
       console.error("Error fetching course:", error);
@@ -212,13 +213,15 @@ function ApiProvider({ children }) {
     try {
       const token = LocalStorageService.getToken();
       console.log(course);
-      const result = await axios.post(endpoints.courses, course, {
+
+      //fot post request, we need to end-point-url, data/body, and headers
+      const response = await axios.post(endpoints.courses, course, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (result.status === 200) {
+      if (response.status === 200) {
         console.log("Course created successfully");
         alert("Course created successfully");
       }
@@ -231,7 +234,7 @@ function ApiProvider({ children }) {
   async function updateCourseData(course) {
     try {
       const token = LocalStorageService.getToken();
-      const result = await axios.put(
+      const response = await axios.put(
         `${endpoints.courses}/${course.courseId}`,
         course,
         {
@@ -241,7 +244,7 @@ function ApiProvider({ children }) {
         }
       );
 
-      if (result.status === 200) {
+      if (response.status === 200) {
         console.log("Course updated successfully");
         alert("Course updated successfully");
       }
@@ -254,13 +257,13 @@ function ApiProvider({ children }) {
   async function deleteCourseData(courseId) {
     try {
       const token = LocalStorageService.getToken();
-      const result = await axios.delete(`${endpoints.courses}/${courseId}`, {
+      const response = await axios.delete(`${endpoints.courses}/${courseId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (result.status === 200) {
+      if (response.status === 200) {
         console.log("Course deleted successfully");
         alert("Course deleted successfully");
       }

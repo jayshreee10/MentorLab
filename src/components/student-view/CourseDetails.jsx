@@ -13,12 +13,12 @@ function StudentViewCourseDetailsPage() {
     courseId,
     fetchCourseDataAndInitial,
   } = useInstructorContext();
+
   const [searchParams] = useSearchParams();
+
   useEffect(() => {
     if (courseId == null) {
-      // navigate("/student/course-details", { state: { id } });
       const id = searchParams.get("id");
-      console.log("id", id);
       fetchCourseDataAndInitial(id);
     }
   }, [courseId]);

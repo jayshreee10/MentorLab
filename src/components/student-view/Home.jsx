@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 
 function StudentHomePage() {
   const navigate = useNavigate();
-  const { getAllCourses, deleteCourseData } = useApiContext();
+  const { getAllCourses } = useApiContext();
   const { initialCourse } = useInstructorContext();
 
   const [courses, setCourses] = useState([]);

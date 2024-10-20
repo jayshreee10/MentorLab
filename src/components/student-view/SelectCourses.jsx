@@ -128,7 +128,7 @@ function SelectCourses() {
                   className="cursor-pointer"
                   onClick={() => {
                     initialCourse(courses[index]);
-                    const id = courses[index].id;
+                    const id = courses[index].courseId;
                     navigate("/student/course-details?id=" + id);
                   }}
                 >
