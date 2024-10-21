@@ -33,35 +33,84 @@ With real-time updates and intuitive navigation, MentorLab enhances the learning
 Here is the folder structure for the `MentorLab` project:
 
 ```sh
-MentorLab
-├── src
-│   ├── components
-│   │   ├── common-form
-│   │   │   ├── form-controls.jsx
+src
+├── App.jsx
+├── assets
+│   ├── 404.png
+│   ├── Girl.png
+│   ├── five.jpg
+│   ├── four.jpg
+│   ├── one.jpg
+│   ├── six.jpg
+│   ├── three.jpg
+│   └── two.jpg
+├── components
+│   ├── Landing
+│   │   ├── AuthBg.jsx
+│   │   ├── usePositionCursor.js
+│   │   └── useScreenSize.js
+│   ├── common-form
+│   │   ├── form-controls.jsx
+│   │   └── index.jsx
+│   ├── instructor-view
+│   │   ├── courses
+│   │   │   ├── add-new-course
+│   │   │   │   ├── CourseDetails.jsx
+│   │   │   │   ├── CourseLectures.jsx
+│   │   │   │   ├── LectureForm.jsx
+│   │   │   │   └── NewCourse.jsx
 │   │   │   └── index.jsx
-│   │   ├── instructor-view
-│   │   │   ├── courses
-│   │   │   └── dashboard
-│   │   ├── landing
-│   │   ├── modals
-│   │   ├── student-view
-│   │   └── ui
-│   ├── config
-│   │   └── index.js
-│   ├── context
-│   │   ├── authContext
-│   │   ├── firebase-context
-│   │   └── instructor-context
-│   ├── lib
-│   │   └── utils.js
-│   ├── pages
-│   │   ├── Auth.jsx
-│   │   ├── Hero.jsx
-│   │   ├── Student.jsx
-│   │   └── Teacher.jsx
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
+│   │   └── dashboard
+│   │       └── index.jsx
+│   ├── modals
+│   │   └── Logout.jsx
+│   ├── student-view
+│   │   ├── CourseDetails.jsx
+│   │   ├── CourseProgress.jsx
+│   │   ├── Header.jsx
+│   │   ├── Home.jsx
+│   │   ├── OpenCourse.jsx
+│   │   ├── SelectCourses.jsx
+│   │   ├── StudentCourses.jsx
+│   │   └── YoutubeEmbed.jsx
+│   └── ui
+│       ├── button.jsx
+│       ├── card.jsx
+│       ├── checkbox.jsx
+│       ├── dialog.jsx
+│       ├── dropdown-menu.jsx
+│       ├── input.jsx
+│       ├── label.jsx
+│       ├── scroll-area.jsx
+│       ├── select.jsx
+│       ├── skeleton.jsx
+│       ├── slider.jsx
+│       ├── switch.jsx
+│       ├── table.jsx
+│       ├── tabs.jsx
+│       ├── textarea.jsx
+│       ├── toast.jsx
+│       └── toaster.jsx
+├── config
+│   ├── index.js
+│   └── service.js
+├── context
+│   ├── auth-context
+│   │   └── index.jsx
+│   ├── firebase-context
+│   │   └── index.jsx
+│   └── instructor-context
+│       └── index.jsx
+├── index.css
+├── lib
+│   └── utils.js
+├── main.jsx
+└── pages
+    ├── Auth.jsx
+    ├── Error.jsx
+    ├── Hero.jsx
+    ├── Student.jsx
+    └── Teacher.jsx
 ```
 
 ## ⚙️ Installation Guide
