@@ -174,6 +174,7 @@ export const courseLandingInitialFormData = {
   objectives: "",
   welcomeMessage: "",
   banner: "",
+  createdBy: "",
 };
 
 export const courseCurriculumInitialFormData = [
