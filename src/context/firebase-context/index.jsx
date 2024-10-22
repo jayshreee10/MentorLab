@@ -17,7 +17,8 @@ export const useApiContext = () => {
 function ApiProvider({ children }) {
   const navigate = useNavigate();
 
-  const BASE_URL = "https://mentorlabapi.onrender.com";
+  // const BASE_URL = "https://mentorlabapi.onrender.com";
+  const BASE_URL = "https://localhost:3001";
 
   const endpoints = {
     signUp: `${BASE_URL}/api/auth/signup`,
@@ -116,7 +117,7 @@ function ApiProvider({ children }) {
         //get token from response
         const token = response.data.token;
         //set token in local storage
-        LocalStorageService.setToken(token);
+        LocalStorageService.setToken(token, email, role, userName);
         //navigate to dashboard
         navigateToDashboard(appUser);
       } else {
@@ -138,13 +139,19 @@ function ApiProvider({ children }) {
 
     try {
       const response = await axios.post(endpoints.signIn, appUser);
-
+      console.log(response);
       if (response.status === 200) {
         const token = response.data.token;
-        LocalStorageService.setToken(token);
+
+        LocalStorageService.setToken(
+          token,
+          response.data.email,
+          response.data.role,
+          response.data.userName
+        );
         appUser = {
           email: response.data.email,
-          name: response.data.name,
+          name: response.data.userName,
           role: response.data.role,
           authType: response.data.authType,
         };

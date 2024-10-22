@@ -110,7 +110,7 @@ function StudentViewCourseDetailsPage() {
                   ${courseDetailsData?.pricing}
                 </span>
               </div>
-              <Button className="w-full">Buy Now</Button>
+              <Button className="w-full">Enroll Now</Button>
             </CardContent>
           </Card>
         </aside>

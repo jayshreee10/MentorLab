@@ -1,14 +1,22 @@
 export class LocalStorageService {
-  //set token to local storage
-  static setToken(token) {
+  // Set token, email, and role to local storage
+  static setToken(token, email, role, username) {
     localStorage.setItem("token_key", token);
+    localStorage.setItem("user", email);
+    localStorage.setItem("role", role);
+    localStorage.setItem("username", username);
   }
-  //get token from local storage
+
+  // Get token from local storage
   static getToken() {
     return localStorage.getItem("token_key");
   }
-  //remove token from local storage
+
+  // Remove token, email, and role from local storage
   static removeToken() {
     localStorage.removeItem("token_key");
+    localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
   }
 }

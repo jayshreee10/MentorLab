@@ -29,7 +29,7 @@ function StudentHomePage() {
           />
         </div>
 
-        <div className="z-10 flex flex-col justify-center items-center gap-6 text-center w-full">
+        <div className="z-10 flex flex-col justify-center items-center gap-10 text-center w-full">
           {/* <img
             src={logo}
             alt="logo"
@@ -41,14 +41,14 @@ function StudentHomePage() {
           <h3 className="text-lg bg-black bg-opacity-60 px-10 py-5 rounded-[100px] font-semibold tracking-wider text-white animate-fade-in">
             Learn, Grow, and Achieve with Expert-Led Courses.
           </h3>
-          <div className="w-[200px]">
+          {/* <div className="w-[200px]">
             <Button
               onClick={() => navigate("/student/courses")}
               className="bg-black text-white  transition duration-300 ease-in-out"
             >
               Start Learning {"->"}
             </Button>
-          </div>
+          </div> */}
         </div>
 
         {/* Unique Features Section */}
