@@ -25,22 +25,22 @@ function StudentViewCourseDetailsPage() {
 
   const navigate = useNavigate();
 
-  const studentViewCourseDetails = {
-    title: "Course Title",
-    subtitle: "Course Subtitle",
-    instructorName: "Jayshree",
-    date: "2023-09-15T12:34:56Z",
-    primaryLanguage: "English",
-    students: [1, 2, 3],
-    objectives: "Objective 1, Objective 2, Objective 3",
-    description: "This is the course description.",
-    curriculum: [
-      { title: "Introduction", freePreview: true },
-      { title: "Advanced Concepts", freePreview: false },
-    ],
-    pricing: 100,
-    image: "course-image-url",
-  };
+  // const studentViewCourseDetails = {
+  //   title: "Course Title",
+  //   subtitle: "Course Subtitle",
+  //   instructorName: "Jayshree",
+  //   date: "2023-09-15T12:34:56Z",
+  //   primaryLanguage: "English",
+  //   students: [1, 2, 3],
+  //   objectives: "Objective 1, Objective 2, Objective 3",
+  //   description: "This is the course description.",
+  //   curriculum: [
+  //     { title: "Introduction", freePreview: true },
+  //     { title: "Advanced Concepts", freePreview: false },
+  //   ],
+  //   pricing: 100,
+  //   image: "course-image-url",
+  // };
 
   return (
     <div className="p-4">
@@ -55,17 +55,17 @@ function StudentViewCourseDetailsPage() {
         <h1 className="text-3xl font-bold mb-4">{courseDetailsData?.title}</h1>
         <p className="text-xl mb-4">{courseDetailsData?.subtitle}</p>
         <div className="flex items-center space-x-4 mt-2 text-sm ">
-          <span>Created By {studentViewCourseDetails?.instructorName}</span>
-          <span>Created On {studentViewCourseDetails?.date.split("T")[0]}</span>
+          <span>Created By {courseDetailsData.createdBy} </span>
+          {/* <span>Created On </span> */}
           <span className="flex items-center">
             <Globe className="mr-1 h-4 w-4" />
             {courseDetailsData?.primaryLanguage}
           </span>
           <span>
-            {studentViewCourseDetails?.students.length}{" "}
+            {/* {studentViewCourseDetails?.students.length}{" "}
             {studentViewCourseDetails?.students.length <= 1
               ? "Student"
-              : "Students"}
+              : "Students"} */}
           </span>
         </div>
       </div>
