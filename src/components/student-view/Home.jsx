@@ -30,25 +30,12 @@ function StudentHomePage() {
         </div>
 
         <div className="z-10 flex flex-col justify-center items-center gap-10 text-center w-full">
-          {/* <img
-            src={logo}
-            alt="logo"
-            className="w-[200px] h-auto animate-fade-in"
-          /> */}
           <h1 className="text-6xl font-bold text-black animate-fade-in backdrop-blur-sm">
             Welcome to Mentor Lab
           </h1>
           <h3 className="text-lg bg-black bg-opacity-60 px-10 py-5 rounded-[100px] font-semibold tracking-wider text-white animate-fade-in">
             Learn, Grow, and Achieve with Expert-Led Courses.
           </h3>
-          {/* <div className="w-[200px]">
-            <Button
-              onClick={() => navigate("/student/courses")}
-              className="bg-black text-white  transition duration-300 ease-in-out"
-            >
-              Start Learning {"->"}
-            </Button>
-          </div> */}
         </div>
 
         {/* Unique Features Section */}
@@ -117,7 +104,6 @@ function StudentHomePage() {
               <div
                 key={index}
                 className="border rounded-lg overflow-hidden shadow cursor-pointer"
-                //          navigate("/student/course-lectures?id=" + courseId);
                 onClick={() => {
                   initialCourse(course);
                   navigate("/student/course-details?id=" + course.courseId);
@@ -131,14 +117,12 @@ function StudentHomePage() {
                 />
                 <div className="p-4">
                   <h3 className="font-bold mb-2">{course.title}</h3>
-                  <p className="text-sm text-gray-700 mb-2">Jayshree</p>
-                  <p className="font-bold text-[16px]">Free</p>
+
+                  <p className="font-bold text-[16px]">${course.pricing}</p>
                 </div>
               </div>
             );
           })}
-
-          {/* You can repeat the card structure or map over actual course data */}
         </div>
       </section>
     </div>
@@ -146,13 +130,3 @@ function StudentHomePage() {
 }
 
 export default StudentHomePage;
-
-{
-  /* <Button
-className="justify-start"
-variant="outline"
-key={categoryItem.id}
->
-{categoryItem.label}
-</Button> */
-}

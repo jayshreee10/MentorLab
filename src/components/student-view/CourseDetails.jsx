@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Globe, PlayCircle } from "lucide-react";
-// import VideoPlayer from "@/components/video-player";
 import { useInstructorContext } from "@/context/instructor-context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { LocalStorageService } from "@/config/service";
 
 function StudentViewCourseDetailsPage() {
   const {
@@ -15,32 +15,27 @@ function StudentViewCourseDetailsPage() {
   } = useInstructorContext();
 
   const [searchParams] = useSearchParams();
+  const [isEnrolled, setIsEnrolled] = useState(false); // State to track if the course is enrolled
 
   useEffect(() => {
     if (courseId == null) {
       const id = searchParams.get("id");
       fetchCourseDataAndInitial(id);
+    } else {
+      // Check if the course is already enrolled
+      const enrolled = LocalStorageService.isCourseEnrolled(courseId);
+      setIsEnrolled(enrolled);
     }
   }, [courseId]);
 
   const navigate = useNavigate();
 
-  // const studentViewCourseDetails = {
-  //   title: "Course Title",
-  //   subtitle: "Course Subtitle",
-  //   instructorName: "Jayshree",
-  //   date: "2023-09-15T12:34:56Z",
-  //   primaryLanguage: "English",
-  //   students: [1, 2, 3],
-  //   objectives: "Objective 1, Objective 2, Objective 3",
-  //   description: "This is the course description.",
-  //   curriculum: [
-  //     { title: "Introduction", freePreview: true },
-  //     { title: "Advanced Concepts", freePreview: false },
-  //   ],
-  //   pricing: 100,
-  //   image: "course-image-url",
-  // };
+  const handleClickEnrollNow = () => {
+    if (!isEnrolled) {
+      LocalStorageService.enrollCourse(courseId);
+      setIsEnrolled(true); // Update state after enrollment
+    }
+  };
 
   return (
     <div className="p-4">
@@ -55,17 +50,10 @@ function StudentViewCourseDetailsPage() {
         <h1 className="text-3xl font-bold mb-4">{courseDetailsData?.title}</h1>
         <p className="text-xl mb-4">{courseDetailsData?.subtitle}</p>
         <div className="flex items-center space-x-4 mt-2 text-sm ">
-          <span>Created By {courseDetailsData.createdBy} </span>
-          {/* <span>Created On </span> */}
+          <span>Created By {courseDetailsData?.createdBy}</span>
           <span className="flex items-center">
             <Globe className="mr-1 h-4 w-4" />
             {courseDetailsData?.primaryLanguage}
-          </span>
-          <span>
-            {/* {studentViewCourseDetails?.students.length}{" "}
-            {studentViewCourseDetails?.students.length <= 1
-              ? "Student"
-              : "Students"} */}
           </span>
         </div>
       </div>
@@ -95,14 +83,13 @@ function StudentViewCourseDetailsPage() {
 
         {/* Sidebar with Video Player and Pricing */}
         <aside className="w-[40vw] ">
-          <Card className=" h-[600px]">
+          <Card className="h-[600px]">
             <CardContent className="p-6">
               <div className="aspect-video mb-4 rounded-lg flex items-center justify-center">
-                {/* <VideoPlayer url="video-url" width="450px" height="200px" /> */}
                 <img
                   src={courseDetailsData?.banner}
                   alt="course"
-                  className="w-[450px] h-[450px] object-contain rounded-lg "
+                  className="w-[450px] h-[450px] object-contain rounded-lg"
                 />
               </div>
               <div className="mb-4">
@@ -110,7 +97,13 @@ function StudentViewCourseDetailsPage() {
                   ${courseDetailsData?.pricing}
                 </span>
               </div>
-              <Button className="w-full">Enroll Now</Button>
+              <Button
+                className="w-full"
+                onClick={handleClickEnrollNow}
+                disabled={isEnrolled} // Disable button if already enrolled
+              >
+                {isEnrolled ? "Already Enrolled" : "Enroll Now"}
+              </Button>
             </CardContent>
           </Card>
         </aside>
