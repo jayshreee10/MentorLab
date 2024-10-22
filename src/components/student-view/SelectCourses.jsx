@@ -32,19 +32,36 @@ const sortOptions = [
 ];
 
 function SelectCourses() {
-  const [sort, setSort] = useState("price-lowtohigh");
   const [filters, setFilters] = useState({});
   const navigate = useNavigate();
   const { getAllCourses } = useApiContext();
   const { initialCourse } = useInstructorContext();
 
   const [courses, setCourses] = useState([]);
+  const [sortedCourses, setSortedCourses] = useState([]);
+  const [sortOption, setSortOption] = useState(sortOptions[0].id);
 
   useEffect(() => {
-    getAllCourses().then((courses) => setCourses(courses));
-  }, []);
+    getAllCourses().then((courses) => {
+      setCourses(courses);
+      setSortedCourses(courses); // Initialize sortedCourses with fetched data
+    });
+  }, [getAllCourses]);
 
-  function handleFilterOnChange(getSectionId, getCurrentOption) {
+  useEffect(() => {
+    // Sort courses based on selected sort option
+    const sorted = [...courses]; // Create a copy of the original array
+
+    if (sortOption === "price-lowtohigh") {
+      sorted.sort((a, b) => a.pricing - b.pricing); // Sort from low to high
+    } else if (sortOption === "price-hightolow") {
+      sorted.sort((a, b) => b.pricing - a.pricing); // Sort from high to low
+    }
+
+    setSortedCourses(sorted); // Update the state with sorted courses
+  }, [sortOption, courses]); // Re-run effect when sortOption or courses change
+
+  const handleFilterOnChange = (getSectionId, getCurrentOption) => {
     let cpyFilters = { ...filters };
     if (!cpyFilters[getSectionId]) {
       cpyFilters[getSectionId] = [getCurrentOption.id];
@@ -54,10 +71,10 @@ function SelectCourses() {
       else cpyFilters[getSectionId].splice(index, 1);
     }
     setFilters(cpyFilters);
-  }
+  };
 
   return (
-    <div className="container  p-4 mt-[70px]">
+    <div className="container p-4 mt-[70px]">
       <h1 className="text-3xl font-bold mb-4">Select Courses</h1>
       <div className="flex flex-col md:flex-row gap-4">
         {/* Filter Sidebar */}
@@ -104,7 +121,10 @@ function SelectCourses() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[180px]">
-                <DropdownMenuRadioGroup value={sort} onValueChange={setSort}>
+                <DropdownMenuRadioGroup
+                  value={sortOption}
+                  onValueChange={setSortOption}
+                >
                   {sortOptions.map((sortItem) => (
                     <DropdownMenuRadioItem
                       value={sortItem.id}
@@ -121,14 +141,14 @@ function SelectCourses() {
             </span>
           </div>
           <div className="space-y-4">
-            {courses.length > 0 ? (
-              courses.map((courseItem, index) => (
+            {sortedCourses.length > 0 ? (
+              sortedCourses.map((courseItem, index) => (
                 <Card
                   key={courseItem.id}
                   className="cursor-pointer"
                   onClick={() => {
-                    initialCourse(courses[index]);
-                    const id = courses[index].courseId;
+                    initialCourse(courseItem);
+                    const id = courseItem.courseId;
                     navigate("/student/course-details?id=" + id);
                   }}
                 >
@@ -145,7 +165,7 @@ function SelectCourses() {
                         {courseItem.title}
                       </CardTitle>
                       <p className="text-sm text-gray-600 mb-1">
-                        Created By <span className="font-bold"> Jayshree</span>
+                        Created By <span className="font-bold">Jayshree</span>
                       </p>
                       <p className="text-[16px] text-gray-600 mt-3 mb-2">
                         {courseItem.curriculum.length}{" "}
