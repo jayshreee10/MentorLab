@@ -46,6 +46,11 @@ function Courses() {
     setCourses(newCourses);
   }
 
+  function enableEdit(course) {
+    const editorEmail = localStorage.getItem("email");
+    return editorEmail === course.createdBy;
+  }
+
   return (
     <Card>
       <CardHeader className="flex justify-between flex-row items-center">
@@ -72,20 +77,24 @@ function Courses() {
                     <TableCell>{getRandomNumber()}</TableCell>
                     <TableCell>Free</TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        onClick={() => editCourse(index)}
-                        variant="ghost"
-                        size="sm"
-                      >
-                        <AiFillEdit size={20} />
-                      </Button>
-                      <Button
-                        onClick={() => deleteCourse(index)}
-                        variant="ghost"
-                        size="sm"
-                      >
-                        <MdDelete size={20} />
-                      </Button>
+                      {enableEdit(course) && (
+                        <>
+                          <Button
+                            onClick={() => editCourse(index)}
+                            variant="ghost"
+                            size="sm"
+                          >
+                            <AiFillEdit size={20} />
+                          </Button>
+                          <Button
+                            onClick={() => deleteCourse(index)}
+                            variant="ghost"
+                            size="sm"
+                          >
+                            <MdDelete size={20} />
+                          </Button>
+                        </>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))

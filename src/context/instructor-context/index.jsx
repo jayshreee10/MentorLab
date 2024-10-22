@@ -23,8 +23,6 @@ export default function InstructorProvider({ children }) {
 
   const [courseId, setCourseId] = useState(null);
 
-  const createdBy = localStorage.getItem("email");
-
   const { createCourseData, updateCourseData, getCourseData } = useApiContext();
 
   function fetchCourseDataAndInitial(courseId) {
@@ -47,7 +45,7 @@ export default function InstructorProvider({ children }) {
       objectives: course.objectives,
       welcomeMessage: course.welcomeMessage,
       banner: course.banner,
-      createdBy: createdBy,
+      createdBy: course.createdBy,
     });
 
     setCourseLectures(course.curriculum);
@@ -123,11 +121,13 @@ export default function InstructorProvider({ children }) {
   }
 
   function submitCourse() {
+    const createdBy = localStorage.getItem("email");
     try {
       const courseData = {
         ...courseDetailsData,
         curriculum: courseLectures,
         courseId: uuidv4(),
+        createdBy: createdBy,
       };
       console.log(courseData);
       createCourseData(courseData);
