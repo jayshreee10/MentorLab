@@ -14,25 +14,14 @@ import { useInstructorContext } from "@/context/instructor-context";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const filterOptions = {
-  Category: [
-    { id: "category-1", label: "Category 1" },
-    { id: "category-2", label: "Category 2" },
-  ],
-  Level: [
-    { id: "beginner", label: "Beginner" },
-    { id: "intermediate", label: "Intermediate" },
-  ],
-};
-
-const sortOptions = [
-  { id: "price-lowtohigh", label: "Price: Low to High" },
-  { id: "price-hightolow", label: "Price: High to Low" },
-];
+import { sortOptions, filterOptions } from "@/config";
 
 function SelectCourses() {
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState({
+    category: [],
+    level: [],
+    primaryLanguage: [],
+  });
   const navigate = useNavigate();
   const { getAllCourses } = useApiContext();
   const { initialCourse } = useInstructorContext();
@@ -49,7 +38,6 @@ function SelectCourses() {
   }, [getAllCourses]);
 
   useEffect(() => {
-    // Sort courses based on selected sort option
     const sorted = [...courses]; // Create a copy of the original array
 
     if (sortOption === "price-lowtohigh") {
@@ -59,93 +47,111 @@ function SelectCourses() {
     }
 
     setSortedCourses(sorted); // Update the state with sorted courses
-  }, [sortOption, courses]); // Re-run effect when sortOption or courses change
+  }, [sortOption, courses]);
 
-  const handleFilterOnChange = (getSectionId, getCurrentOption) => {
-    let cpyFilters = { ...filters };
-    if (!cpyFilters[getSectionId]) {
-      cpyFilters[getSectionId] = [getCurrentOption.id];
-    } else {
-      const index = cpyFilters[getSectionId].indexOf(getCurrentOption.id);
-      if (index === -1) cpyFilters[getSectionId].push(getCurrentOption.id);
-      else cpyFilters[getSectionId].splice(index, 1);
-    }
-    setFilters(cpyFilters);
+  const handleFilterOnChange = (filterKey, option) => {
+    setFilters((prevFilters) => {
+      const currentFilters = prevFilters[filterKey] || [];
+      if (currentFilters.includes(option.id)) {
+        return {
+          ...prevFilters,
+          [filterKey]: currentFilters.filter((id) => id !== option.id),
+        };
+      } else {
+        return {
+          ...prevFilters,
+          [filterKey]: [...currentFilters, option.id],
+        };
+      }
+    });
   };
 
-  return (
-    <div className="container p-4 mt-[70px]">
-      <h1 className="text-3xl font-bold mb-4">Select Courses</h1>
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Filter Sidebar */}
-        <aside className="w-full md:w-64 space-y-4">
-          <div>
-            {Object.keys(filterOptions).map((filterKey) => (
-              <div key={filterKey} className="p-4 border-b">
-                <h3 className="font-bold mb-3">{filterKey.toUpperCase()}</h3>
-                <div className="grid gap-2 mt-2">
-                  {filterOptions[filterKey].map((option) => (
-                    <Label
-                      key={option.id}
-                      className="flex font-medium items-center gap-3"
-                    >
-                      <Checkbox
-                        checked={
-                          filters[filterKey]?.includes(option.id) || false
-                        }
-                        onCheckedChange={() =>
-                          handleFilterOnChange(filterKey, option)
-                        }
-                      />
-                      {option.label}
-                    </Label>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </aside>
+  const getFilteredCourses = () => {
+    return sortedCourses.filter((course) => {
+      const categoryMatch =
+        filters.category.length === 0 ||
+        filters.category.includes(course.category);
+      const levelMatch =
+        filters.level.length === 0 || filters.level.includes(course.level);
+      const languageMatch =
+        filters.primaryLanguage.length === 0 ||
+        filters.primaryLanguage.includes(course.primaryLanguage);
 
-        {/* Main Content Area */}
-        <main className="flex-1">
-          <div className="flex justify-end items-center mb-4 gap-5">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-2 p-5"
-                >
-                  <ArrowUpDownIcon className="h-4 w-4" />
-                  <span className="text-[16px] font-medium">Sort By</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-[180px]">
-                <DropdownMenuRadioGroup
-                  value={sortOption}
-                  onValueChange={setSortOption}
-                >
-                  {sortOptions.map((sortItem) => (
-                    <DropdownMenuRadioItem
-                      value={sortItem.id}
-                      key={sortItem.id}
-                    >
-                      {sortItem.label}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <span className="text-sm text-black font-bold">
-              {courses.length} Results
-            </span>
+      return categoryMatch && levelMatch && languageMatch;
+    });
+  };
+
+  const filteredCourses = getFilteredCourses();
+
+  return (
+    <div className="container  p-6 mt-[70px] bg-white rounded-lg">
+      <h1 className="text-3xl font-bold mb-6">Select Courses</h1>
+      <div className="flex flex-col md:flex-row gap-4">
+        <aside className="w-full md:w-1/4">
+          <h2 className="font-bold mb-3">Filters</h2>
+          {Object.keys(filterOptions).map((filterKey) => (
+            <div key={filterKey} className="p-4 border-b">
+              <h3 className="font-semibold mb-2">{filterKey.toUpperCase()}</h3>
+              <div className="grid gap-2 mt-2">
+                {filterOptions[filterKey].map((option) => (
+                  <Label
+                    key={option.id}
+                    className="flex font-medium items-center gap-2"
+                  >
+                    <Checkbox
+                      checked={filters[filterKey]?.includes(option.id) || false}
+                      onCheckedChange={() =>
+                        handleFilterOnChange(filterKey, option)
+                      }
+                    />
+                    {option.label}
+                  </Label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </aside>
+        <div className="flex-grow">
+          <div className="flex  items-center justify-end mb-4">
+            <div className="flex items-center justify-end gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <ArrowUpDownIcon className="h-4 w-4" />
+                    <span className="text-[16px] font-medium">Sort By</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-[180px]">
+                  <DropdownMenuRadioGroup
+                    value={sortOption}
+                    onValueChange={setSortOption}
+                  >
+                    {sortOptions.map((sortItem) => (
+                      <DropdownMenuRadioItem
+                        value={sortItem.id}
+                        key={sortItem.id}
+                      >
+                        {sortItem.label}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <span className="text-sm text-black font-bold">
+                {filteredCourses.length} Results
+              </span>
+            </div>
           </div>
           <div className="space-y-4">
-            {sortedCourses.length > 0 ? (
-              sortedCourses.map((courseItem, index) => (
+            {filteredCourses.length > 0 ? (
+              filteredCourses.map((courseItem) => (
                 <Card
-                  key={courseItem.id}
-                  className="cursor-pointer"
+                  key={courseItem.courseId}
+                  className="cursor-pointer  hover:shadow-xl transition-shadow"
                   onClick={() => {
                     initialCourse(courseItem);
                     const id = courseItem.courseId;
@@ -156,7 +162,7 @@ function SelectCourses() {
                     <div className="w-48 h-32 flex-shrink-0">
                       <img
                         src={courseItem.banner}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-md"
                         alt="course"
                       />
                     </div>
@@ -183,7 +189,7 @@ function SelectCourses() {
               <h1 className="font-extrabold text-4xl">No Courses Found</h1>
             )}
           </div>
-        </main>
+        </div>
       </div>
     </div>
   );
