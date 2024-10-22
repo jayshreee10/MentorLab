@@ -29,14 +29,17 @@ function Header() {
         </div>
         <div className="flex items-center space-x-4">
           <div className="flex gap-4 items-center">
-            {/* <div className="flex cursor-pointer items-center gap-3">
-              <Link to="/student/courses" className="flex items-center">
+            <div className="flex cursor-pointer items-center gap-3">
+              <Link
+                to="/student/enrolled-courses"
+                className="flex items-center"
+              >
                 <span className="font-extrabold md:text-xl text-[14px]">
                   My Courses
                 </span>
               </Link>
               <TvMinimalPlay className="w-8 h-8" />
-            </div> */}
+            </div>
             <Button
               onClick={() => {
                 setOpenModal(true);
