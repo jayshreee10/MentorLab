@@ -13,16 +13,16 @@ export default function OpenCourse() {
 
   const menuItems = [
     {
-      icon: Youtube, // You can change the icon as needed
+      icon: Youtube,
       label: "Course Details",
       value: "CourseDetails",
-      component: <StudentViewCourseDetailsPage />, // Render the course details component
+      component: <StudentViewCourseDetailsPage />,
     },
     {
-      icon: Text, // You can change the icon as needed
+      icon: Text,
       label: "Course Progress",
       value: "CourseProgress",
-      component: null, // Render the course progress component
+      component: null,
     },
   ];
 

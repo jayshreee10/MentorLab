@@ -17,8 +17,8 @@ export const useApiContext = () => {
 function ApiProvider({ children }) {
   const navigate = useNavigate();
 
-  // const BASE_URL = "https://mentorlabapi.onrender.com";
-  const BASE_URL = "http://localhost:5001";
+  const BASE_URL = "https://mentorlabapi.onrender.com";
+  // const BASE_URL = "http://localhost:5001";
 
   const endpoints = {
     signUp: `${BASE_URL}/api/auth/signup`,
@@ -181,7 +181,6 @@ function ApiProvider({ children }) {
 
   // Function to get all courses
   async function getAllCourses() {
-    // return all courses -> [ {}, {}, {} ]
     try {
       const token = LocalStorageService.getToken();
       const response = await axios.get(endpoints.courses, {
@@ -221,7 +220,6 @@ function ApiProvider({ children }) {
       const token = LocalStorageService.getToken();
       console.log(course);
 
-      //fot post request, we need to end-point-url, data/body, and headers
       const response = await axios.post(endpoints.courses, course, {
         headers: {
           Authorization: `Bearer ${token}`,

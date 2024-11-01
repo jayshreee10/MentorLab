@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import VideoPlayer from "@/components/video-player";
 import { useInstructorContext } from "@/context/instructor-context";
 import { Check, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -10,11 +9,7 @@ import YoutubeEmbed from "./YoutubeEmbed";
 
 function NewStudentCourseProgressPage() {
   const navigate = useNavigate();
-  const [lockCourse, setLockCourse] = useState(false);
   const [currentLecture, setCurrentLecture] = useState(0);
-  const [showCourseCompleteDialog, setShowCourseCompleteDialog] =
-    useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
 
   const {
@@ -25,12 +20,11 @@ function NewStudentCourseProgressPage() {
   } = useInstructorContext();
 
   const [searchParams] = useSearchParams();
+
   useEffect(() => {
     const id = searchParams.get("id");
     console.log("id", id);
     if (courseId == null) {
-      // navigate("/student/course-details", { state: { id } });
-
       fetchCourseDataAndInitial(id);
     }
   }, [courseId]);
