@@ -190,13 +190,3 @@ Stay tuned for exciting new features!
 
 - **Jayshree Sadangi** - [@Jayshree10](https://github.com/jayshreee10)
 
-## ⭐️ Contributing
-
-Support the ongoing development of **MentorLab** by:
-
-1. Starring this repository on GitHub.
-2. Sharing the project with your network on **Twitter** and **LinkedIn**.
-3. Writing tutorials or reviews on platforms like **Medium** or **Dev.to**.
-4. Buying me a coffee to show appreciation!
-
----
