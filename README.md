@@ -135,7 +135,7 @@ To get started with MentorLab, follow these steps:
 3. **Install Dependencies**:
 
    ```bash
-   npm install
+    npm install
    ```
 
 4. **Run the Development Server**:
